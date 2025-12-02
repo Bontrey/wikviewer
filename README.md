@@ -1,16 +1,16 @@
-# EmptyScreenApp
+# MyApp
 
-A minimal iOS app that displays an empty white screen.
+A minimal iOS app that displays a blue circle on a white screen.
 
 ## Project Structure
 
-- `EmptyScreenAppApp.swift` - Main app entry point
-- `ContentView.swift` - The main view showing an empty white screen
+- `MyAppApp.swift` - Main app entry point
+- `ContentView.swift` - The main view showing a blue circle
 - `Info.plist` - App configuration
 
 ## How to Run
 
-1. Open `EmptyScreenApp.xcodeproj` in Xcode
+1. Open `MyApp.xcodeproj` in Xcode
 2. Select a simulator or connected device
 3. Press Run (Cmd+R)
 
