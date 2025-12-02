@@ -18,5 +18,12 @@
     <string>1.0</string>
     <key>CFBundleVersion</key>
     <string>1</string>
+    <key>UILaunchScreen</key>
+    <dict>
+        <key>UIImageRespectsSafeAreaInsets</key>
+        <false/>
+        <key>UIColorName</key>
+        <string>systemBackground</string>
+    </dict>
 </dict>
 </plist>

@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		AA0000000000000000000001 /* MyAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000002 /* MyAppApp.swift */; };
 		AA0000000000000000000003 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000004 /* ContentView.swift */; };
+		AA0000000000000000000015 /* DictionaryEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000016 /* DictionaryEntry.swift */; };
+		AA0000000000000000000017 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000018 /* DetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -16,6 +18,8 @@
 		AA0000000000000000000002 /* MyAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAppApp.swift; sourceTree = "<group>"; };
 		AA0000000000000000000004 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		AA0000000000000000000006 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AA0000000000000000000016 /* DictionaryEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryEntry.swift; sourceTree = "<group>"; };
+		AA0000000000000000000018 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +46,8 @@
 			children = (
 				AA0000000000000000000002 /* MyAppApp.swift */,
 				AA0000000000000000000004 /* ContentView.swift */,
+				AA0000000000000000000018 /* DetailView.swift */,
+				AA0000000000000000000016 /* DictionaryEntry.swift */,
 				AA0000000000000000000006 /* Info.plist */,
 			);
 			path = MyApp;
@@ -124,6 +130,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA0000000000000000000003 /* ContentView.swift in Sources */,
+				AA0000000000000000000017 /* DetailView.swift in Sources */,
+				AA0000000000000000000015 /* DictionaryEntry.swift in Sources */,
 				AA0000000000000000000001 /* MyAppApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

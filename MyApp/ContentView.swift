@@ -1,14 +1,41 @@
 import SwiftUI
 
 struct ContentView: View {
-    var body: some View {
-        ZStack {
-            Color.white
-                .ignoresSafeArea()
+    @State private var searchText = ""
+    @State private var entries = DictionaryEntry.sampleData
 
-            Circle()
-                .fill(Color.blue)
-                .frame(width: 200, height: 200)
+    var filteredEntries: [DictionaryEntry] {
+        if searchText.isEmpty {
+            return entries
+        } else {
+            return entries.filter { entry in
+                entry.word.localizedCaseInsensitiveContains(searchText) ||
+                entry.gloss.localizedCaseInsensitiveContains(searchText) ||
+                entry.definition.localizedCaseInsensitiveContains(searchText)
+            }
+        }
+    }
+
+    var body: some View {
+        NavigationStack {
+            List(filteredEntries) { entry in
+                NavigationLink(destination: DetailView(entry: entry)) {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(entry.word)
+                            .font(.headline)
+                            .foregroundColor(.primary)
+
+                        Text(entry.gloss)
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                            .lineLimit(2)
+                    }
+                    .padding(.vertical, 4)
+                }
+            }
+            .listStyle(.plain)
+            .navigationTitle("Dictionary")
+            .searchable(text: $searchText, prompt: "Search words, definitions...")
         }
     }
 }

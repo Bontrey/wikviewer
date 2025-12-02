@@ -1,11 +1,20 @@
 # MyApp
 
-A minimal iOS app that displays a blue circle on a white screen.
+A dictionary iOS app with search functionality and detailed word entries.
+
+## Features
+
+- Searchable dictionary with real-time filtering
+- List view showing words and short definitions (glosses)
+- Detailed view with full definitions, examples, and etymology
+- 10 sample dictionary entries included
 
 ## Project Structure
 
 - `MyAppApp.swift` - Main app entry point
-- `ContentView.swift` - The main view showing a blue circle
+- `ContentView.swift` - Search and list view
+- `DetailView.swift` - Detailed word entry view
+- `DictionaryEntry.swift` - Data model and sample data
 - `Info.plist` - App configuration
 
 ## How to Run
