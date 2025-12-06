@@ -1,14 +1,14 @@
 import SwiftUI
 
 struct ContentView: View {
+    @ObservedObject var databaseManager: DatabaseManager
     @State private var searchText = ""
-    @State private var entries = DictionaryEntry.sampleData
 
     var filteredEntries: [DictionaryEntry] {
         if searchText.isEmpty {
-            return entries
+            return databaseManager.entries
         } else {
-            return entries.filter { entry in
+            return databaseManager.entries.filter { entry in
                 entry.word.localizedCaseInsensitiveContains(searchText) ||
                 entry.gloss.localizedCaseInsensitiveContains(searchText) ||
                 entry.definition.localizedCaseInsensitiveContains(searchText)
@@ -41,5 +41,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    ContentView(databaseManager: DatabaseManager())
 }

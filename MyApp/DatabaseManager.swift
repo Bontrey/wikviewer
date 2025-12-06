@@ -1,0 +1,149 @@
+import Foundation
+import SQLite3
+
+class DatabaseManager: ObservableObject {
+    @Published var entries: [DictionaryEntry] = []
+    @Published var isLoading: Bool = false
+    @Published var error: Error?
+
+    private var db: OpaquePointer?
+
+    func loadDictionary() {
+        isLoading = true
+        error = nil
+
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            guard let self = self else { return }
+
+            // Find dictionary.db in the bundle
+            guard let dbPath = self.findDictionaryDatabase() else {
+                DispatchQueue.main.async {
+                    self.isLoading = false
+                    self.error = NSError(domain: "DatabaseManager", code: 1, userInfo: [NSLocalizedDescriptionKey: "Database file not found"])
+                }
+                return
+            }
+
+            // Open database
+            if sqlite3_open(dbPath, &self.db) != SQLITE_OK {
+                DispatchQueue.main.async {
+                    self.isLoading = false
+                    self.error = NSError(domain: "DatabaseManager", code: 2, userInfo: [NSLocalizedDescriptionKey: "Unable to open database"])
+                }
+                return
+            }
+
+            // Query entries
+            let queryString = "SELECT word, pos, data FROM entries ORDER BY word LIMIT 1000"
+            var statement: OpaquePointer?
+
+            if sqlite3_prepare_v2(self.db, queryString, -1, &statement, nil) == SQLITE_OK {
+                var loadedEntries: [DictionaryEntry] = []
+
+                while sqlite3_step(statement) == SQLITE_ROW {
+                    let word = String(cString: sqlite3_column_text(statement, 0))
+                    let pos = sqlite3_column_text(statement, 1).flatMap { String(cString: $0) } ?? "unknown"
+                    let jsonData = String(cString: sqlite3_column_text(statement, 2))
+
+                    if let entry = self.parseEntry(word: word, pos: pos, jsonData: jsonData) {
+                        loadedEntries.append(entry)
+                    }
+                }
+
+                sqlite3_finalize(statement)
+
+                DispatchQueue.main.async {
+                    self.entries = loadedEntries
+                    self.isLoading = false
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self.isLoading = false
+                    self.error = NSError(domain: "DatabaseManager", code: 3, userInfo: [NSLocalizedDescriptionKey: "Failed to prepare query"])
+                }
+            }
+
+            sqlite3_close(self.db)
+            self.db = nil
+        }
+    }
+
+    private func parseEntry(word: String, pos: String, jsonData: String) -> DictionaryEntry? {
+        guard let data = jsonData.data(using: .utf8),
+              let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+            return nil
+        }
+
+        // Extract gloss from senses
+        var gloss = ""
+        var definition = ""
+        var examples: [String] = []
+        var etymology: String?
+
+        if let senses = json["senses"] as? [[String: Any]], let firstSense = senses.first {
+            if let glosses = firstSense["glosses"] as? [String], let firstGloss = glosses.first {
+                gloss = firstGloss
+            }
+
+            // Get definition from raw_glosses or glosses
+            if let rawGlosses = firstSense["raw_glosses"] as? [String], let firstDef = rawGlosses.first {
+                definition = firstDef
+            } else if let glosses = firstSense["glosses"] as? [String] {
+                definition = glosses.joined(separator: "; ")
+            }
+
+            // Extract examples
+            if let examplesList = firstSense["examples"] as? [[String: Any]] {
+                examples = examplesList.compactMap { example in
+                    if let text = example["text"] as? String {
+                        return text
+                    }
+                    return nil
+                }
+            }
+        }
+
+        // Extract etymology
+        if let etymologyTexts = json["etymology_texts"] as? [String], !etymologyTexts.isEmpty {
+            etymology = etymologyTexts.joined(separator: " ")
+        }
+
+        return DictionaryEntry(
+            word: word,
+            gloss: gloss.isEmpty ? definition : gloss,
+            partOfSpeech: pos,
+            definition: definition.isEmpty ? gloss : definition,
+            examples: examples,
+            etymology: etymology
+        )
+    }
+
+    private func findDictionaryDatabase() -> String? {
+        // First try standard bundle location
+        if let path = Bundle.main.path(forResource: "dictionary", ofType: "db") {
+            return path
+        }
+
+        // Check in OnDemandResources directory (for embedded asset packs in Debug builds)
+        let bundlePath = Bundle.main.bundlePath
+        let odrPath = (bundlePath as NSString).appendingPathComponent("OnDemandResources")
+        let fileManager = FileManager.default
+
+        if fileManager.fileExists(atPath: odrPath) {
+            do {
+                let contents = try fileManager.contentsOfDirectory(atPath: odrPath)
+                for assetPack in contents {
+                    let assetPackPath = (odrPath as NSString).appendingPathComponent(assetPack)
+                    let dbPath = (assetPackPath as NSString).appendingPathComponent("dictionary.db")
+                    if fileManager.fileExists(atPath: dbPath) {
+                        return dbPath
+                    }
+                }
+            } catch {
+                print("Error searching OnDemandResources: \(error)")
+            }
+        }
+
+        return nil
+    }
+}
