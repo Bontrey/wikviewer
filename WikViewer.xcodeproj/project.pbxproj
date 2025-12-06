@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9610BCCF2EE47BAF00BD62D1 /* dictionary.db in Resources */ = {isa = PBXBuildFile; fileRef = 9610BCCE2EE47BAF00BD62D1 /* dictionary.db */; settings = {ASSET_TAGS = (fr, ); }; };
-		AA0000000000000000000001 /* MyAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000002 /* MyAppApp.swift */; };
+		AA0000000000000000000001 /* WikViewerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000002 /* WikViewerApp.swift */; };
 		AA0000000000000000000003 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000004 /* ContentView.swift */; };
 		AA0000000000000000000015 /* DictionaryEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000016 /* DictionaryEntry.swift */; };
 		AA0000000000000000000017 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000018 /* DetailView.swift */; };
@@ -19,9 +19,9 @@
 
 /* Begin PBXFileReference section */
 		9610BCCE2EE47BAF00BD62D1 /* dictionary.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = dictionary.db; sourceTree = "<group>"; };
-		AA0000000000000000000002 /* MyAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAppApp.swift; sourceTree = "<group>"; };
+		AA0000000000000000000002 /* WikViewerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikViewerApp.swift; sourceTree = "<group>"; };
 		AA0000000000000000000004 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		AA0000000000000000000005 /* MyApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA0000000000000000000005 /* WikViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WikViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA0000000000000000000006 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AA0000000000000000000016 /* DictionaryEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryEntry.swift; sourceTree = "<group>"; };
 		AA0000000000000000000018 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
@@ -45,15 +45,15 @@
 			isa = PBXGroup;
 			children = (
 				9610BCCE2EE47BAF00BD62D1 /* dictionary.db */,
-				AA0000000000000000000009 /* MyApp */,
+				AA0000000000000000000009 /* WikViewer */,
 				AA000000000000000000000A /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		AA0000000000000000000009 /* MyApp */ = {
+		AA0000000000000000000009 /* WikViewer */ = {
 			isa = PBXGroup;
 			children = (
-				AA0000000000000000000002 /* MyAppApp.swift */,
+				AA0000000000000000000002 /* WikViewerApp.swift */,
 				AA0000000000000000000004 /* ContentView.swift */,
 				AA0000000000000000000018 /* DetailView.swift */,
 				AA0000000000000000000024 /* DownloadView.swift */,
@@ -62,13 +62,13 @@
 				AA0000000000000000000022 /* DatabaseManager.swift */,
 				AA0000000000000000000006 /* Info.plist */,
 			);
-			path = MyApp;
+			path = WikViewer;
 			sourceTree = "<group>";
 		};
 		AA000000000000000000000A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				AA0000000000000000000005 /* MyApp.app */,
+				AA0000000000000000000005 /* WikViewer.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -76,9 +76,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		AA000000000000000000000B /* MyApp */ = {
+		AA000000000000000000000B /* WikViewer */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AA000000000000000000000C /* Build configuration list for PBXNativeTarget "MyApp" */;
+			buildConfigurationList = AA000000000000000000000C /* Build configuration list for PBXNativeTarget "WikViewer" */;
 			buildPhases = (
 				AA000000000000000000000D /* Sources */,
 				AA0000000000000000000007 /* Frameworks */,
@@ -88,9 +88,9 @@
 			);
 			dependencies = (
 			);
-			name = MyApp;
-			productName = MyApp;
-			productReference = AA0000000000000000000005 /* MyApp.app */;
+			name = WikViewer;
+			productName = WikViewer;
+			productReference = AA0000000000000000000005 /* WikViewer.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -111,7 +111,7 @@
 					};
 				};
 			};
-			buildConfigurationList = AA0000000000000000000010 /* Build configuration list for PBXProject "MyApp" */;
+			buildConfigurationList = AA0000000000000000000010 /* Build configuration list for PBXProject "WikViewer" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -124,7 +124,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				AA000000000000000000000B /* MyApp */,
+				AA000000000000000000000B /* WikViewer */,
 			);
 		};
 /* End PBXProject section */
@@ -151,7 +151,7 @@
 				AA0000000000000000000015 /* DictionaryEntry.swift in Sources */,
 				AA0000000000000000000019 /* ODRManager.swift in Sources */,
 				AA0000000000000000000021 /* DatabaseManager.swift in Sources */,
-				AA0000000000000000000001 /* MyAppApp.swift in Sources */,
+				AA0000000000000000000001 /* WikViewerApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -288,7 +288,7 @@
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = MyApp/Info.plist;
+				INFOPLIST_FILE = WikViewer/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -299,8 +299,8 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.MyApp;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.WikViewer;
+				PRODUCT_NAME = "Wiktionary Viewer";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -317,7 +317,7 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = MyApp/Info.plist;
+				INFOPLIST_FILE = WikViewer/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -328,8 +328,8 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.MyApp;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.WikViewer;
+				PRODUCT_NAME = "Wiktionary Viewer";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -339,7 +339,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		AA000000000000000000000C /* Build configuration list for PBXNativeTarget "MyApp" */ = {
+		AA000000000000000000000C /* Build configuration list for PBXNativeTarget "WikViewer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AA0000000000000000000013 /* Debug */,
@@ -348,7 +348,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AA0000000000000000000010 /* Build configuration list for PBXProject "MyApp" */ = {
+		AA0000000000000000000010 /* Build configuration list for PBXProject "WikViewer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AA0000000000000000000011 /* Debug */,

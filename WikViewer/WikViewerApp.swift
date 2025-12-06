@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct MyAppApp: App {
+struct WikViewerApp: App {
     @StateObject private var odrManager = ODRManager()
     @StateObject private var databaseManager = DatabaseManager()
 

@@ -10,11 +10,11 @@ struct DownloadView: View {
                 .font(.system(size: 80))
                 .foregroundColor(.blue)
 
-            Text("French Dictionary")
+            Text("Wiktionary Viewer")
                 .font(.largeTitle)
                 .fontWeight(.bold)
 
-            Text("Download the French dictionary database to get started")
+            Text("Download the Wiktionary database to get started")
                 .font(.body)
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)
