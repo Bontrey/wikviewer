@@ -9,9 +9,7 @@ struct ContentView: View {
             return databaseManager.entries
         } else {
             return databaseManager.entries.filter { entry in
-                entry.word.localizedCaseInsensitiveContains(searchText) ||
-                entry.gloss.localizedCaseInsensitiveContains(searchText) ||
-                entry.definition.localizedCaseInsensitiveContains(searchText)
+                entry.word.localizedCaseInsensitiveContains(searchText)
             }
         }
     }
@@ -35,7 +33,7 @@ struct ContentView: View {
             }
             .listStyle(.plain)
             .navigationTitle("Dictionary")
-            .searchable(text: $searchText, prompt: "Search words, definitions...")
+            .searchable(text: $searchText, prompt: "Search words...")
         }
     }
 }
