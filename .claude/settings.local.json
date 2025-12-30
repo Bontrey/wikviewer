@@ -9,7 +9,9 @@
       "Bash(open -a Simulator)",
       "Bash(git reset:*)",
       "Bash(find:*)",
-      "Bash(sqlite3:*)"
+      "Bash(sqlite3:*)",
+      "Bash(compression_tool -encode:*)",
+      "Bash(ls:*)"
     ],
     "deny": [],
     "ask": []
