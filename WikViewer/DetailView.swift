@@ -20,17 +20,6 @@ struct DetailView: View {
 
                 Divider()
 
-                // Gloss
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Quick Definition")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                        .textCase(.uppercase)
-
-                    Text(entry.gloss)
-                        .font(.body)
-                }
-
                 // Definition
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Definition")
