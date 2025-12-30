@@ -94,10 +94,17 @@ class DatabaseManager: ObservableObject {
                 return
             }
 
-            // Use FTS5 virtual table and join back to entries for full data
+            // Choose appropriate FTS table and query based on query length
+            // For queries < 3 characters, use default tokenizer with prefix matching
+            // For queries >= 3 characters, use trigram tokenizer for substring matching
+            let useTrigramIndex = query.count >= 3
+
+            let ftsTable = useTrigramIndex ? "entries_fts_trigram" : "entries_fts"
+            let searchQuery = useTrigramIndex ? query : "\(query)*"
+
             let queryString = """
                 SELECT e.word, e.pos, e.data
-                FROM entries_fts f
+                FROM \(ftsTable) f
                 JOIN entries e ON f.rowid = e.id
                 WHERE f.word MATCH ?
                 ORDER BY rank
@@ -106,8 +113,8 @@ class DatabaseManager: ObservableObject {
             var statement: OpaquePointer?
 
             if sqlite3_prepare_v2(searchDb, queryString, -1, &statement, nil) == SQLITE_OK {
-                // Bind the search query for substring matching with trigram tokenizer
-                sqlite3_bind_text(statement, 1, (query as NSString).utf8String, -1, nil)
+                // Bind the search query
+                sqlite3_bind_text(statement, 1, (searchQuery as NSString).utf8String, -1, nil)
 
                 while sqlite3_step(statement) == SQLITE_ROW {
                     let word = String(cString: sqlite3_column_text(statement, 0))
