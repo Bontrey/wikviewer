@@ -106,9 +106,8 @@ class DatabaseManager: ObservableObject {
             var statement: OpaquePointer?
 
             if sqlite3_prepare_v2(searchDb, queryString, -1, &statement, nil) == SQLITE_OK {
-                // Bind the search query with prefix matching
-                let searchPattern = query + "*"
-                sqlite3_bind_text(statement, 1, (searchPattern as NSString).utf8String, -1, nil)
+                // Bind the search query for substring matching with trigram tokenizer
+                sqlite3_bind_text(statement, 1, (query as NSString).utf8String, -1, nil)
 
                 while sqlite3_step(statement) == SQLITE_ROW {
                     let word = String(cString: sqlite3_column_text(statement, 0))
