@@ -183,31 +183,7 @@ class DatabaseManager: ObservableObject {
     }
 
     private func findDictionaryDatabase() -> String? {
-        // First try standard bundle location
-        if let path = Bundle.main.path(forResource: "dictionary", ofType: "db") {
-            return path
-        }
-
-        // Check in OnDemandResources directory (for embedded asset packs in Debug builds)
-        let bundlePath = Bundle.main.bundlePath
-        let odrPath = (bundlePath as NSString).appendingPathComponent("OnDemandResources")
-        let fileManager = FileManager.default
-
-        if fileManager.fileExists(atPath: odrPath) {
-            do {
-                let contents = try fileManager.contentsOfDirectory(atPath: odrPath)
-                for assetPack in contents {
-                    let assetPackPath = (odrPath as NSString).appendingPathComponent(assetPack)
-                    let dbPath = (assetPackPath as NSString).appendingPathComponent("dictionary.db")
-                    if fileManager.fileExists(atPath: dbPath) {
-                        return dbPath
-                    }
-                }
-            } catch {
-                print("Error searching OnDemandResources: \(error)")
-            }
-        }
-
-        return nil
+        // Load from embedded bundle resource
+        return Bundle.main.path(forResource: "dictionary", ofType: "db")
     }
 }

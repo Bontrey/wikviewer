@@ -7,15 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9610BCCF2EE47BAF00BD62D1 /* dictionary.db in Resources */ = {isa = PBXBuildFile; fileRef = 9610BCCE2EE47BAF00BD62D1 /* dictionary.db */; settings = {ASSET_TAGS = (fr, ); }; };
+		9610BCCF2EE47BAF00BD62D1 /* dictionary.db in Resources */ = {isa = PBXBuildFile; fileRef = 9610BCCE2EE47BAF00BD62D1 /* dictionary.db */; };
 		96D8DB1C2F04190D00B1BFCF /* EntryCoalescer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D8DB1B2F04190700B1BFCF /* EntryCoalescer.swift */; };
 		AA0000000000000000000001 /* WikViewerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000002 /* WikViewerApp.swift */; };
 		AA0000000000000000000003 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000004 /* ContentView.swift */; };
 		AA0000000000000000000015 /* DictionaryEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000016 /* DictionaryEntry.swift */; };
 		AA0000000000000000000017 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000018 /* DetailView.swift */; };
-		AA0000000000000000000019 /* ODRManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000020 /* ODRManager.swift */; };
 		AA0000000000000000000021 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000022 /* DatabaseManager.swift */; };
-		AA0000000000000000000023 /* DownloadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000024 /* DownloadView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,9 +25,7 @@
 		AA0000000000000000000006 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AA0000000000000000000016 /* DictionaryEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryEntry.swift; sourceTree = "<group>"; };
 		AA0000000000000000000018 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
-		AA0000000000000000000020 /* ODRManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ODRManager.swift; sourceTree = "<group>"; };
 		AA0000000000000000000022 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
-		AA0000000000000000000024 /* DownloadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,9 +54,7 @@
 				AA0000000000000000000002 /* WikViewerApp.swift */,
 				AA0000000000000000000004 /* ContentView.swift */,
 				AA0000000000000000000018 /* DetailView.swift */,
-				AA0000000000000000000024 /* DownloadView.swift */,
 				AA0000000000000000000016 /* DictionaryEntry.swift */,
-				AA0000000000000000000020 /* ODRManager.swift */,
 				AA0000000000000000000022 /* DatabaseManager.swift */,
 				96D8DB1B2F04190700B1BFCF /* EntryCoalescer.swift */,
 				AA0000000000000000000006 /* Info.plist */,
@@ -151,9 +145,7 @@
 				AA0000000000000000000003 /* ContentView.swift in Sources */,
 				AA0000000000000000000017 /* DetailView.swift in Sources */,
 				96D8DB1C2F04190D00B1BFCF /* EntryCoalescer.swift in Sources */,
-				AA0000000000000000000023 /* DownloadView.swift in Sources */,
 				AA0000000000000000000015 /* DictionaryEntry.swift in Sources */,
-				AA0000000000000000000019 /* ODRManager.swift in Sources */,
 				AA0000000000000000000021 /* DatabaseManager.swift in Sources */,
 				AA0000000000000000000001 /* WikViewerApp.swift in Sources */,
 			);
@@ -289,7 +281,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
-				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = WikViewer/Info.plist;
