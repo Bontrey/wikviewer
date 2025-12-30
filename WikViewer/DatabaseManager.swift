@@ -3,6 +3,7 @@ import SQLite3
 
 class DatabaseManager: ObservableObject {
     @Published var entries: [DictionaryEntry] = []
+    @Published var coalescedEntries: [CoalescedEntry] = []
     @Published var isLoading: Bool = false
     @Published var error: Error?
 
@@ -54,6 +55,7 @@ class DatabaseManager: ObservableObject {
 
                 DispatchQueue.main.async {
                     self.entries = loadedEntries
+                    self.coalescedEntries = EntryCoalescer.coalesce(loadedEntries)
                     self.isLoading = false
                 }
             } else {
@@ -68,7 +70,7 @@ class DatabaseManager: ObservableObject {
         }
     }
 
-    func searchDictionary(query: String, completion: @escaping ([DictionaryEntry]) -> Void) {
+    func searchDictionary(query: String, completion: @escaping ([CoalescedEntry]) -> Void) {
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let self = self else { return }
 
@@ -124,7 +126,8 @@ class DatabaseManager: ObservableObject {
             sqlite3_close(searchDb)
 
             DispatchQueue.main.async {
-                completion(results)
+                let coalesced = EntryCoalescer.coalesce(results)
+                completion(coalesced)
             }
         }
     }

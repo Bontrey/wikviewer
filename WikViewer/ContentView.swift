@@ -3,11 +3,11 @@ import SwiftUI
 struct ContentView: View {
     @ObservedObject var databaseManager: DatabaseManager
     @State private var searchText = ""
-    @State private var searchResults: [DictionaryEntry] = []
+    @State private var searchResults: [CoalescedEntry] = []
 
-    var displayedEntries: [DictionaryEntry] {
+    var displayedEntries: [CoalescedEntry] {
         if searchText.isEmpty {
-            return databaseManager.entries
+            return databaseManager.coalescedEntries
         } else {
             return searchResults
         }
@@ -16,16 +16,20 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             List(displayedEntries) { entry in
-                NavigationLink(destination: DetailView(entry: entry)) {
+                NavigationLink(destination: DetailView(coalescedEntry: entry)) {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(entry.word)
                             .font(.headline)
                             .foregroundColor(.primary)
 
-                        Text(entry.gloss)
+                        Text(entry.primaryGloss)
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                             .lineLimit(2)
+
+                        Text(entry.partsOfSpeech)
+                            .font(.caption)
+                            .foregroundColor(.secondary)
                     }
                     .padding(.vertical, 4)
                 }

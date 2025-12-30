@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9610BCCF2EE47BAF00BD62D1 /* dictionary.db in Resources */ = {isa = PBXBuildFile; fileRef = 9610BCCE2EE47BAF00BD62D1 /* dictionary.db */; settings = {ASSET_TAGS = (fr, ); }; };
+		96D8DB1C2F04190D00B1BFCF /* EntryCoalescer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D8DB1B2F04190700B1BFCF /* EntryCoalescer.swift */; };
 		AA0000000000000000000001 /* WikViewerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000002 /* WikViewerApp.swift */; };
 		AA0000000000000000000003 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000004 /* ContentView.swift */; };
 		AA0000000000000000000015 /* DictionaryEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000016 /* DictionaryEntry.swift */; };
@@ -19,9 +20,10 @@
 
 /* Begin PBXFileReference section */
 		9610BCCE2EE47BAF00BD62D1 /* dictionary.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = dictionary.db; sourceTree = "<group>"; };
+		96D8DB1B2F04190700B1BFCF /* EntryCoalescer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryCoalescer.swift; sourceTree = "<group>"; };
 		AA0000000000000000000002 /* WikViewerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikViewerApp.swift; sourceTree = "<group>"; };
 		AA0000000000000000000004 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		AA0000000000000000000005 /* WikViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WikViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA0000000000000000000005 /* WikViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = WikViewer.app; path = "Wiktionary Viewer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA0000000000000000000006 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AA0000000000000000000016 /* DictionaryEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryEntry.swift; sourceTree = "<group>"; };
 		AA0000000000000000000018 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
@@ -60,6 +62,7 @@
 				AA0000000000000000000016 /* DictionaryEntry.swift */,
 				AA0000000000000000000020 /* ODRManager.swift */,
 				AA0000000000000000000022 /* DatabaseManager.swift */,
+				96D8DB1B2F04190700B1BFCF /* EntryCoalescer.swift */,
 				AA0000000000000000000006 /* Info.plist */,
 			);
 			path = WikViewer;
@@ -147,6 +150,7 @@
 			files = (
 				AA0000000000000000000003 /* ContentView.swift in Sources */,
 				AA0000000000000000000017 /* DetailView.swift in Sources */,
+				96D8DB1C2F04190D00B1BFCF /* EntryCoalescer.swift in Sources */,
 				AA0000000000000000000023 /* DownloadView.swift in Sources */,
 				AA0000000000000000000015 /* DictionaryEntry.swift in Sources */,
 				AA0000000000000000000019 /* ODRManager.swift in Sources */,

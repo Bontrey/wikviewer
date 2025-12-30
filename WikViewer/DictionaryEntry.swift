@@ -20,6 +20,51 @@ struct DictionaryEntry: Identifiable {
     }
 }
 
+// MARK: - DictionarySense
+
+struct DictionarySense: Identifiable {
+    let id: UUID
+    let partOfSpeech: String
+    let gloss: String
+    let definition: String
+    let examples: [String]
+    let etymology: String?
+
+    init(from entry: DictionaryEntry) {
+        self.id = entry.id
+        self.partOfSpeech = entry.partOfSpeech
+        self.gloss = entry.gloss
+        self.definition = entry.definition
+        self.examples = entry.examples
+        self.etymology = entry.etymology
+    }
+}
+
+// MARK: - CoalescedEntry
+
+struct CoalescedEntry: Identifiable {
+    let id: UUID
+    let word: String
+    let senses: [DictionarySense]
+
+    var primaryGloss: String {
+        senses.first?.gloss ?? ""
+    }
+
+    var partsOfSpeech: String {
+        let uniquePOS = Set(senses.map { $0.partOfSpeech })
+        return Array(uniquePOS).sorted().joined(separator: ", ")
+    }
+
+    func groupedByPartOfSpeech() -> [(pos: String, senses: [DictionarySense])] {
+        let grouped = Dictionary(grouping: senses, by: { $0.partOfSpeech })
+        return grouped.sorted { $0.key < $1.key }
+            .map { (pos: $0.key, senses: $0.value) }
+    }
+}
+
+// MARK: - Sample Data
+
 // Sample data for testing
 extension DictionaryEntry {
     static let sampleData: [DictionaryEntry] = [
