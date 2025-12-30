@@ -3,20 +3,19 @@ import SwiftUI
 struct ContentView: View {
     @ObservedObject var databaseManager: DatabaseManager
     @State private var searchText = ""
+    @State private var searchResults: [DictionaryEntry] = []
 
-    var filteredEntries: [DictionaryEntry] {
+    var displayedEntries: [DictionaryEntry] {
         if searchText.isEmpty {
             return databaseManager.entries
         } else {
-            return databaseManager.entries.filter { entry in
-                entry.word.localizedCaseInsensitiveContains(searchText)
-            }
+            return searchResults
         }
     }
 
     var body: some View {
         NavigationStack {
-            List(filteredEntries) { entry in
+            List(displayedEntries) { entry in
                 NavigationLink(destination: DetailView(entry: entry)) {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(entry.word)
@@ -34,6 +33,19 @@ struct ContentView: View {
             .listStyle(.plain)
             .navigationTitle("Dictionary")
             .searchable(text: $searchText, prompt: "Search words...")
+            .onChange(of: searchText) { _, newValue in
+                if !newValue.isEmpty {
+                    performSearch(query: newValue)
+                } else {
+                    searchResults = []
+                }
+            }
+        }
+    }
+
+    private func performSearch(query: String) {
+        databaseManager.searchDictionary(query: query) { results in
+            searchResults = results
         }
     }
 }
