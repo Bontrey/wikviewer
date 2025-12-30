@@ -1,5 +1,6 @@
 import Foundation
 import SQLite3
+import Compression
 
 class DatabaseManager: ObservableObject {
     @Published var entries: [DictionaryEntry] = []
@@ -189,7 +190,72 @@ class DatabaseManager: ObservableObject {
     }
 
     private func findDictionaryDatabase() -> String? {
-        // Load from embedded bundle resource
-        return Bundle.main.path(forResource: "dictionary", ofType: "db")
+        // Check if uncompressed database exists in Documents directory
+        let documentsPath = getDocumentsDirectory()
+        let uncompressedDbPath = documentsPath.appendingPathComponent("dictionary.db").path
+
+        // If uncompressed file exists, use it
+        if FileManager.default.fileExists(atPath: uncompressedDbPath) {
+            return uncompressedDbPath
+        }
+
+        // Otherwise, decompress from bundle
+        guard let compressedDbPath = Bundle.main.path(forResource: "dictionary.db", ofType: "lzfse") else {
+            print("Error: dictionary.db.lzfse not found in bundle")
+            return nil
+        }
+
+        // Decompress the file
+        if decompressDatabase(from: compressedDbPath, to: uncompressedDbPath) {
+            return uncompressedDbPath
+        }
+
+        return nil
+    }
+
+    private func getDocumentsDirectory() -> URL {
+        return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+    }
+
+    private func decompressDatabase(from sourcePath: String, to destinationPath: String) -> Bool {
+        do {
+            // Read the compressed data
+            let compressedData = try Data(contentsOf: URL(fileURLWithPath: sourcePath))
+
+            // Decompress using LZFSE
+            guard let decompressedData = compressedData.withUnsafeBytes({ (bytes: UnsafeRawBufferPointer) -> Data? in
+                guard let baseAddress = bytes.baseAddress else { return nil }
+
+                // Create output buffer (estimate 10x compression ratio)
+                let outputBufferSize = compressedData.count * 10
+                var outputBuffer = UnsafeMutablePointer<UInt8>.allocate(capacity: outputBufferSize)
+                defer { outputBuffer.deallocate() }
+
+                let decompressedSize = compression_decode_buffer(
+                    outputBuffer,
+                    outputBufferSize,
+                    baseAddress.assumingMemoryBound(to: UInt8.self),
+                    compressedData.count,
+                    nil,
+                    COMPRESSION_LZFSE
+                )
+
+                guard decompressedSize > 0 else { return nil }
+
+                return Data(bytes: outputBuffer, count: decompressedSize)
+            }) else {
+                print("Error: Failed to decompress LZFSE data")
+                return false
+            }
+
+            // Write the decompressed data to the destination
+            try decompressedData.write(to: URL(fileURLWithPath: destinationPath))
+
+            print("Successfully decompressed dictionary.db to \(destinationPath)")
+            return true
+        } catch {
+            print("Error during decompression: \(error.localizedDescription)")
+            return false
+        }
     }
 }

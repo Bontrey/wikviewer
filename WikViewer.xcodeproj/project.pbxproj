@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9610BCCF2EE47BAF00BD62D1 /* dictionary.db in Resources */ = {isa = PBXBuildFile; fileRef = 9610BCCE2EE47BAF00BD62D1 /* dictionary.db */; };
+		96D3FB872F0433AD00DED1E2 /* dictionary.db.lzfse in Resources */ = {isa = PBXBuildFile; fileRef = 96D3FB862F0433AD00DED1E2 /* dictionary.db.lzfse */; };
 		96D8DB1C2F04190D00B1BFCF /* EntryCoalescer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D8DB1B2F04190700B1BFCF /* EntryCoalescer.swift */; };
 		AA0000000000000000000001 /* WikViewerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000002 /* WikViewerApp.swift */; };
 		AA0000000000000000000003 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000004 /* ContentView.swift */; };
@@ -17,7 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		9610BCCE2EE47BAF00BD62D1 /* dictionary.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = dictionary.db; sourceTree = "<group>"; };
+		96D3FB862F0433AD00DED1E2 /* dictionary.db.lzfse */ = {isa = PBXFileReference; lastKnownFileType = file; path = dictionary.db.lzfse; sourceTree = "<group>"; };
 		96D8DB1B2F04190700B1BFCF /* EntryCoalescer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryCoalescer.swift; sourceTree = "<group>"; };
 		AA0000000000000000000002 /* WikViewerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikViewerApp.swift; sourceTree = "<group>"; };
 		AA0000000000000000000004 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -42,7 +42,7 @@
 		AA0000000000000000000008 = {
 			isa = PBXGroup;
 			children = (
-				9610BCCE2EE47BAF00BD62D1 /* dictionary.db */,
+				96D3FB862F0433AD00DED1E2 /* dictionary.db.lzfse */,
 				AA0000000000000000000009 /* WikViewer */,
 				AA000000000000000000000A /* Products */,
 			);
@@ -128,7 +128,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9610BCCF2EE47BAF00BD62D1 /* dictionary.db in Resources */,
+				96D3FB872F0433AD00DED1E2 /* dictionary.db.lzfse in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

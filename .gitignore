@@ -1,4 +1,4 @@
 .DS_STORE
-dictionary.db
+dictionary.db*
 build
 xcuserdata
