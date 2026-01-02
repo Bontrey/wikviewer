@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		966FC1B62F07F30A0039D339 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 966FC1B52F07F30A0039D339 /* Assets.xcassets */; };
 		96D3FB872F0433AD00DED1E2 /* dictionary.db.lzfse in Resources */ = {isa = PBXBuildFile; fileRef = 96D3FB862F0433AD00DED1E2 /* dictionary.db.lzfse */; };
 		96D8DB1C2F04190D00B1BFCF /* EntryCoalescer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D8DB1B2F04190700B1BFCF /* EntryCoalescer.swift */; };
 		AA0000000000000000000001 /* WikViewerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000002 /* WikViewerApp.swift */; };
@@ -19,11 +20,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		966FC1B52F07F30A0039D339 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		96D3FB862F0433AD00DED1E2 /* dictionary.db.lzfse */ = {isa = PBXFileReference; lastKnownFileType = file; path = dictionary.db.lzfse; sourceTree = "<group>"; };
 		96D8DB1B2F04190700B1BFCF /* EntryCoalescer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryCoalescer.swift; sourceTree = "<group>"; };
 		AA0000000000000000000002 /* WikViewerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikViewerApp.swift; sourceTree = "<group>"; };
 		AA0000000000000000000004 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		AA0000000000000000000005 /* WikViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = WikViewer.app; path = "Wiktionary Viewer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA0000000000000000000005 /* Wiktionnaire.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wiktionnaire.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA0000000000000000000006 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AA0000000000000000000016 /* DictionaryEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryEntry.swift; sourceTree = "<group>"; };
 		AA0000000000000000000018 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
@@ -64,6 +66,7 @@
 				AA0000000000000000000023 /* SelectableText.swift */,
 				AA0000000000000000000026 /* SearchResultsView.swift */,
 				AA0000000000000000000006 /* Info.plist */,
+				966FC1B52F07F30A0039D339 /* Assets.xcassets */,
 			);
 			path = WikViewer;
 			sourceTree = "<group>";
@@ -71,7 +74,7 @@
 		AA000000000000000000000A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				AA0000000000000000000005 /* WikViewer.app */,
+				AA0000000000000000000005 /* Wiktionnaire.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -93,7 +96,7 @@
 			);
 			name = WikViewer;
 			productName = WikViewer;
-			productReference = AA0000000000000000000005 /* WikViewer.app */;
+			productReference = AA0000000000000000000005 /* Wiktionnaire.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -134,6 +137,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				966FC1B62F07F30A0039D339 /* Assets.xcassets in Resources */,
 				96D3FB872F0433AD00DED1E2 /* dictionary.db.lzfse in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -283,6 +287,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
@@ -300,7 +305,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.WikViewer;
-				PRODUCT_NAME = "Wiktionary Viewer";
+				PRODUCT_NAME = Wiktionnaire;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -312,6 +317,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
@@ -329,7 +335,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.WikViewer;
-				PRODUCT_NAME = "Wiktionary Viewer";
+				PRODUCT_NAME = Wiktionnaire;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
