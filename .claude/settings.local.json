@@ -11,7 +11,9 @@
       "Bash(find:*)",
       "Bash(sqlite3:*)",
       "Bash(compression_tool -encode:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "WebFetch(domain:medium.com)",
+      "Bash(git checkout:*)"
     ],
     "deny": [],
     "ask": []
