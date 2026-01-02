@@ -71,7 +71,7 @@ class DatabaseManager: ObservableObject {
         }
     }
 
-    func searchDictionary(query: String, completion: @escaping ([CoalescedEntry]) -> Void) {
+    func searchDictionary(query: String, useTrigramIndex: Bool = false, completion: @escaping ([CoalescedEntry]) -> Void) {
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let self = self else { return }
 
@@ -95,11 +95,9 @@ class DatabaseManager: ObservableObject {
                 return
             }
 
-            // Choose appropriate FTS table and query based on query length
-            // For queries < 3 characters, use default tokenizer with prefix matching
-            // For queries >= 3 characters, use trigram tokenizer for substring matching
-            let useTrigramIndex = query.count >= 3
-
+            // Choose appropriate FTS table and query based on user selection
+            // Default (non-trigram): uses prefix matching with "*"
+            // Trigram: uses substring matching without prefix operator
             let ftsTable = useTrigramIndex ? "entries_fts_trigram" : "entries_fts"
             let searchQuery = useTrigramIndex ? query : "\(query)*"
 
