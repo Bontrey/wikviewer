@@ -35,8 +35,8 @@ struct ContentView: View {
                 }
             }
             .listStyle(.plain)
-            .navigationTitle("Dictionary")
-            .searchable(text: $searchText, prompt: "Search words...")
+            .navigationTitle("Wiktionnaire")
+            .searchable(text: $searchText, prompt: "Find words...")
             .onChange(of: searchText) { _, newValue in
                 if !newValue.isEmpty {
                     performSearch(query: newValue)

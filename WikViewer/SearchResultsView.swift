@@ -31,9 +31,9 @@ struct SearchResultsView: View {
             }
         }
         .listStyle(.plain)
-        .navigationTitle("Search Results")
+        .navigationTitle("Find Results")
         .navigationBarTitleDisplayMode(.inline)
-        .searchable(text: $searchText, prompt: "Search words...")
+        .searchable(text: $searchText, prompt: "Find words...")
         .onChange(of: searchText) { _, newValue in
             performSearch(query: newValue)
         }
