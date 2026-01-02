@@ -7,6 +7,7 @@ struct WikViewerApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView(databaseManager: databaseManager)
+                .environmentObject(databaseManager)
                 .onAppear {
                     databaseManager.loadDictionary()
                 }

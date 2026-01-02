@@ -1,8 +1,15 @@
 import SwiftUI
 
+enum FindDestination: Hashable {
+    case entry(CoalescedEntry)
+    case searchResults(String)
+}
+
 struct DetailView: View {
     let coalescedEntry: CoalescedEntry
+    @EnvironmentObject var databaseManager: DatabaseManager
     @State private var selection: TextSelection? = nil
+    @State private var findDestination: FindDestination? = nil
 
     var body: some View {
         ScrollView {
@@ -19,7 +26,8 @@ struct DetailView: View {
                     PartOfSpeechSection(
                         partOfSpeech: group.pos,
                         senses: group.senses,
-                        selection: $selection
+                        selection: $selection,
+                        onFind: handleFind
                     )
                 }
 
@@ -28,6 +36,26 @@ struct DetailView: View {
             .padding()
         }
         .navigationBarTitleDisplayMode(.inline)
+        .navigationDestination(item: $findDestination) { destination in
+            switch destination {
+            case .entry(let entry):
+                DetailView(coalescedEntry: entry)
+            case .searchResults(let query):
+                SearchResultsView(databaseManager: databaseManager, initialQuery: query)
+            }
+        }
+    }
+
+    private func handleFind(selectedText: String) {
+        databaseManager.searchDictionary(query: selectedText) { results in
+            if results.count == 1, let singleResult = results.first {
+                // Single result: navigate directly to the entry
+                findDestination = .entry(singleResult)
+            } else {
+                // 0 or multiple results: show search results view
+                findDestination = .searchResults(selectedText)
+            }
+        }
     }
 }
 
@@ -35,6 +63,7 @@ struct PartOfSpeechSection: View {
     let partOfSpeech: String
     let senses: [DictionarySense]
     @Binding var selection: TextSelection?
+    var onFind: ((String) -> Void)?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -50,7 +79,8 @@ struct PartOfSpeechSection: View {
                 SenseView(
                     sense: senses[index],
                     number: senses.count > 1 ? index + 1 : nil,
-                    selection: $selection
+                    selection: $selection,
+                    onFind: onFind
                 )
 
                 if index < senses.count - 1 {
@@ -67,6 +97,7 @@ struct SenseView: View {
     let sense: DictionarySense
     let number: Int?
     @Binding var selection: TextSelection?
+    var onFind: ((String) -> Void)?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -84,7 +115,7 @@ struct SenseView: View {
                     .foregroundColor(.secondary)
                     .textCase(.uppercase)
 
-                SelectableText(text: sense.definition, selection: $selection)
+                SelectableText(text: sense.definition, selection: $selection, onFind: onFind)
                     .font(.body)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
@@ -103,7 +134,7 @@ struct SenseView: View {
                                 .foregroundColor(.secondary)
                                 .fontWeight(.medium)
 
-                            SelectableText(text: sense.examples[index], selection: $selection)
+                            SelectableText(text: sense.examples[index], selection: $selection, onFind: onFind)
                                 .font(.body)
                                 .italic()
                                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -120,7 +151,7 @@ struct SenseView: View {
                         .foregroundColor(.secondary)
                         .textCase(.uppercase)
 
-                    SelectableText(text: etymology, selection: $selection)
+                    SelectableText(text: etymology, selection: $selection, onFind: onFind)
                         .font(.body)
                         .foregroundColor(.secondary)
                         .frame(maxWidth: .infinity, alignment: .leading)

@@ -4,18 +4,21 @@ import UIKit
 // Selectable Text (as Label)
 class SelectableTextLabel: UITextView {
 
+    var onFind: ((String) -> Void)?
+
     // hide the cursor
     override func caretRect(for position: UITextPosition) -> CGRect {
         return .zero
     }
 
-    // only allow copy, select, selectAll, and share
+    // only allow copy, select, selectAll, share, and customFind
     override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
         switch action {
             case
             #selector(copy(_:)),
             #selector(select(_:)),
-            #selector(selectAll(_:)):
+            #selector(selectAll(_:)),
+            #selector(customFind(_:)):
             return true
         default:
             if (action == Selector(("_share:"))) {
@@ -23,6 +26,20 @@ class SelectableTextLabel: UITextView {
             }
             return false
         }
+    }
+
+    // Add custom Find menu item
+    override func editMenu(for textRange: UITextRange, suggestedActions: [UIMenuElement]) -> UIMenu? {
+        var actions = suggestedActions
+
+        // Create custom Find action
+        let findAction = UIAction(title: "Find", image: UIImage(systemName: "magnifyingglass")) { [weak self] _ in
+            self?.customFind(nil)
+        }
+
+        actions.append(findAction)
+
+        return UIMenu(children: actions)
     }
 
     // to remove autofill from the action menu
@@ -35,6 +52,15 @@ class SelectableTextLabel: UITextView {
         let size = sizeThatFits(CGSize(width: bounds.width, height: .greatestFiniteMagnitude))
         return CGSize(width: UIView.noIntrinsicMetric, height: size.height)
     }
+
+    @objc func customFind(_ sender: Any?) {
+        guard let selectedRange = selectedTextRange,
+              let selectedText = text(in: selectedRange),
+              !selectedText.isEmpty else {
+            return
+        }
+        onFind?(selectedText)
+    }
 }
 
 struct SelectableText: UIViewRepresentable {
@@ -43,11 +69,13 @@ struct SelectableText: UIViewRepresentable {
     @Binding var selection: TextSelection?
     var uiFont: UIFont = UIFont.preferredFont(forTextStyle: .body)
     var textColor: UIColor = .label
+    var onFind: ((String) -> Void)?
 
     func makeUIView(context: Context) -> SelectableTextLabel {
         let textView = SelectableTextLabel()
         textView.delegate = context.coordinator
         textView.text = self.text
+        textView.onFind = self.onFind
 
         // Configure for read-only selectable text
         textView.isEditable = false
@@ -73,6 +101,9 @@ struct SelectableText: UIViewRepresentable {
         // Update font and color
         uiView.font = uiFont
         uiView.textColor = textColor
+
+        // Update onFind callback
+        uiView.onFind = self.onFind
 
         // Don't apply selection from other text fields
         context.coordinator.currentText = self.text
@@ -110,6 +141,12 @@ extension SelectableText {
         if let currentFont = uiFont.fontDescriptor.withSymbolicTraits(.traitItalic) {
             view.uiFont = UIFont(descriptor: currentFont, size: uiFont.pointSize)
         }
+        return view
+    }
+
+    func onFindAction(_ action: @escaping (String) -> Void) -> SelectableText {
+        var view = self
+        view.onFind = action
         return view
     }
 }

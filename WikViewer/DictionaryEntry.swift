@@ -22,7 +22,7 @@ struct DictionaryEntry: Identifiable {
 
 // MARK: - DictionarySense
 
-struct DictionarySense: Identifiable {
+struct DictionarySense: Identifiable, Hashable {
     let id: UUID
     let partOfSpeech: String
     let gloss: String
@@ -38,11 +38,19 @@ struct DictionarySense: Identifiable {
         self.examples = entry.examples
         self.etymology = entry.etymology
     }
+
+    static func == (lhs: DictionarySense, rhs: DictionarySense) -> Bool {
+        lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
 }
 
 // MARK: - CoalescedEntry
 
-struct CoalescedEntry: Identifiable {
+struct CoalescedEntry: Identifiable, Hashable {
     let id: UUID
     let word: String
     let senses: [DictionarySense]
@@ -60,6 +68,14 @@ struct CoalescedEntry: Identifiable {
         let grouped = Dictionary(grouping: senses, by: { $0.partOfSpeech })
         return grouped.sorted { $0.key < $1.key }
             .map { (pos: $0.key, senses: $0.value) }
+    }
+
+    static func == (lhs: CoalescedEntry, rhs: CoalescedEntry) -> Bool {
+        lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
 }
 
