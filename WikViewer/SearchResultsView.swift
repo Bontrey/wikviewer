@@ -38,7 +38,7 @@ struct SearchResultsView: View {
         .searchable(text: $searchText, prompt: "Find words...")
         .safeAreaInset(edge: .bottom) {
             HStack {
-                Image(systemName: useTrigramIndex ? "text.magnifyingglass" : "textformat.abc")
+                Image(systemName: useTrigramIndex ? "eye" : "eye.half.closed")
                     .font(.body)
                     .foregroundColor(.secondary)
                 Toggle("", isOn: $useTrigramIndex)
