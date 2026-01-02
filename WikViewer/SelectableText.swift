@@ -37,7 +37,7 @@ class SelectableTextLabel: UITextView {
             self?.customFind(nil)
         }
 
-        actions.append(findAction)
+        actions.insert(findAction, at: 0)
 
         return UIMenu(children: actions)
     }
