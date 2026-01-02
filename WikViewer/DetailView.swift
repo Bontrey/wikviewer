@@ -25,6 +25,7 @@ struct DetailView: View {
             }
             .padding()
         }
+        .textSelection(.enabled)
         .navigationBarTitleDisplayMode(.inline)
     }
 }
