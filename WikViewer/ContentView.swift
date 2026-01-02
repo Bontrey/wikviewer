@@ -6,11 +6,8 @@ struct ContentView: View {
     @State private var searchResults: [CoalescedEntry] = []
 
     var displayedEntries: [CoalescedEntry] {
-        if searchText.isEmpty {
-            return databaseManager.coalescedEntries
-        } else {
-            return searchResults
-        }
+        let entries = searchText.isEmpty ? databaseManager.coalescedEntries : searchResults
+        return entries.sorted { $0.word.count < $1.word.count }
     }
 
     var body: some View {
