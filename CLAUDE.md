@@ -38,7 +38,7 @@ open -a Simulator
 
 ## Project Configuration
 
-- **Target iOS Version**: iOS 17.0+
+- **Target iOS Version**: iOS 18.0+
 - **Xcode Version**: 15.0+
 - **Swift Version**: 5.0
 - **Bundle Identifier**: com.example.WikViewer

@@ -2,6 +2,7 @@ import SwiftUI
 
 struct DetailView: View {
     let coalescedEntry: CoalescedEntry
+    @State private var selection: TextSelection? = nil
 
     var body: some View {
         ScrollView {
@@ -17,7 +18,8 @@ struct DetailView: View {
                 ForEach(coalescedEntry.groupedByPartOfSpeech(), id: \.pos) { group in
                     PartOfSpeechSection(
                         partOfSpeech: group.pos,
-                        senses: group.senses
+                        senses: group.senses,
+                        selection: $selection
                     )
                 }
 
@@ -25,7 +27,6 @@ struct DetailView: View {
             }
             .padding()
         }
-        .textSelection(.enabled)
         .navigationBarTitleDisplayMode(.inline)
     }
 }
@@ -33,6 +34,7 @@ struct DetailView: View {
 struct PartOfSpeechSection: View {
     let partOfSpeech: String
     let senses: [DictionarySense]
+    @Binding var selection: TextSelection?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -47,7 +49,8 @@ struct PartOfSpeechSection: View {
             ForEach(senses.indices, id: \.self) { index in
                 SenseView(
                     sense: senses[index],
-                    number: senses.count > 1 ? index + 1 : nil
+                    number: senses.count > 1 ? index + 1 : nil,
+                    selection: $selection
                 )
 
                 if index < senses.count - 1 {
@@ -63,6 +66,7 @@ struct PartOfSpeechSection: View {
 struct SenseView: View {
     let sense: DictionarySense
     let number: Int?
+    @Binding var selection: TextSelection?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -80,8 +84,9 @@ struct SenseView: View {
                     .foregroundColor(.secondary)
                     .textCase(.uppercase)
 
-                Text(sense.definition)
+                SelectableText(text: sense.definition, selection: $selection)
                     .font(.body)
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
 
             // Examples
@@ -98,9 +103,10 @@ struct SenseView: View {
                                 .foregroundColor(.secondary)
                                 .fontWeight(.medium)
 
-                            Text(sense.examples[index])
+                            SelectableText(text: sense.examples[index], selection: $selection)
                                 .font(.body)
                                 .italic()
+                                .frame(maxWidth: .infinity, alignment: .leading)
                         }
                     }
                 }
@@ -114,9 +120,10 @@ struct SenseView: View {
                         .foregroundColor(.secondary)
                         .textCase(.uppercase)
 
-                    Text(etymology)
+                    SelectableText(text: etymology, selection: $selection)
                         .font(.body)
                         .foregroundColor(.secondary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
         }
