@@ -17,7 +17,7 @@ struct DetailView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
                 // Word header
-                Text(coalescedEntry.word)
+                SelectableText(text: coalescedEntry.word, selection: $selection, onFind: handleFind)
                     .font(.largeTitle)
                     .fontWeight(.bold)
 

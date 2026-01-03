@@ -68,6 +68,7 @@ struct SelectableText: UIViewRepresentable {
     var text: String
     @Binding var selection: TextSelection?
     var uiFont: UIFont = UIFont.preferredFont(forTextStyle: .body)
+    var fontWeight: UIFont.Weight?
     var textColor: UIColor = .label
     var onFind: ((String) -> Void)?
 
@@ -86,7 +87,7 @@ struct SelectableText: UIViewRepresentable {
         textView.textContainer.lineFragmentPadding = 0
         textView.autocorrectionType = .no
         textView.textContentType = .none
-        textView.font = uiFont
+        textView.font = applyFontWeight(to: uiFont, weight: fontWeight)
         textView.textColor = textColor
 
         return textView
@@ -99,7 +100,7 @@ struct SelectableText: UIViewRepresentable {
         }
 
         // Update font and color
-        uiView.font = uiFont
+        uiView.font = applyFontWeight(to: uiFont, weight: fontWeight)
         uiView.textColor = textColor
 
         // Update onFind callback
@@ -120,6 +121,20 @@ struct SelectableText: UIViewRepresentable {
         let size = uiView.sizeThatFits(CGSize(width: width, height: .greatestFiniteMagnitude))
         return CGSize(width: width, height: size.height)
     }
+
+    private func applyFontWeight(to font: UIFont, weight: UIFont.Weight?) -> UIFont {
+        guard let weight = weight else { return font }
+
+        let traits: [UIFontDescriptor.TraitKey: Any] = [
+            .weight: weight
+        ]
+
+        let descriptor = font.fontDescriptor.addingAttributes([
+            .traits: traits
+        ])
+
+        return UIFont(descriptor: descriptor, size: font.pointSize)
+    }
 }
 
 // SwiftUI modifiers for SelectableText
@@ -127,6 +142,12 @@ extension SelectableText {
     func font(_ font: Font) -> SelectableText {
         var view = self
         view.uiFont = font.toUIFont()
+        return view
+    }
+
+    func fontWeight(_ weight: Font.Weight) -> SelectableText {
+        var view = self
+        view.fontWeight = weight.toUIFontWeight()
         return view
     }
 
@@ -154,9 +175,60 @@ extension SelectableText {
 // Extension to convert SwiftUI Font to UIFont
 extension Font {
     func toUIFont() -> UIFont {
-        // Map common SwiftUI fonts to UIFont
-        // This is a simplified mapping
-        return UIFont.preferredFont(forTextStyle: .body)
+        switch self {
+        case .largeTitle:
+            return UIFont.preferredFont(forTextStyle: .largeTitle)
+        case .title:
+            return UIFont.preferredFont(forTextStyle: .title1)
+        case .title2:
+            return UIFont.preferredFont(forTextStyle: .title2)
+        case .title3:
+            return UIFont.preferredFont(forTextStyle: .title3)
+        case .headline:
+            return UIFont.preferredFont(forTextStyle: .headline)
+        case .subheadline:
+            return UIFont.preferredFont(forTextStyle: .subheadline)
+        case .body:
+            return UIFont.preferredFont(forTextStyle: .body)
+        case .callout:
+            return UIFont.preferredFont(forTextStyle: .callout)
+        case .footnote:
+            return UIFont.preferredFont(forTextStyle: .footnote)
+        case .caption:
+            return UIFont.preferredFont(forTextStyle: .caption1)
+        case .caption2:
+            return UIFont.preferredFont(forTextStyle: .caption2)
+        default:
+            return UIFont.preferredFont(forTextStyle: .body)
+        }
+    }
+}
+
+// Extension to convert SwiftUI Font.Weight to UIFont.Weight
+extension Font.Weight {
+    func toUIFontWeight() -> UIFont.Weight {
+        switch self {
+        case .ultraLight:
+            return .ultraLight
+        case .thin:
+            return .thin
+        case .light:
+            return .light
+        case .regular:
+            return .regular
+        case .medium:
+            return .medium
+        case .semibold:
+            return .semibold
+        case .bold:
+            return .bold
+        case .heavy:
+            return .heavy
+        case .black:
+            return .black
+        default:
+            return .regular
+        }
     }
 }
 
