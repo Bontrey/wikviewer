@@ -56,6 +56,12 @@ struct ContentView: View {
                     .focused($isSearchFocused)
                     .textFieldStyle(.plain)
                     .autocorrectionDisabled()
+
+                Button(action: { useTrigramIndex.toggle() }) {
+                    Image(systemName: useTrigramIndex ? "eye" : "eye.half.closed")
+                        .foregroundColor(.secondary)
+                }
+
                 if !searchText.isEmpty {
                     Button(action: { searchText = "" }) {
                         Image(systemName: "xmark.circle.fill")
@@ -97,20 +103,6 @@ struct ContentView: View {
         }
         .navigationTitle(navigationTitle)
         .navigationBarTitleDisplayMode(titleDisplayMode)
-        .safeAreaInset(edge: .bottom) {
-            HStack {
-                Image(systemName: useTrigramIndex ? "eye" : "eye.half.closed")
-                    .font(.body)
-                    .foregroundColor(.secondary)
-                Toggle("", isOn: $useTrigramIndex)
-                    .toggleStyle(.switch)
-                    .labelsHidden()
-                Spacer()
-            }
-            .padding(.horizontal)
-            .padding(.vertical, 8)
-            .background(Color(UIColor.systemBackground))
-        }
         .task(id: searchText) {
             if searchText.isEmpty {
                 searchResults = []
