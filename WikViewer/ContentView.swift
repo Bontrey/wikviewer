@@ -36,13 +36,25 @@ struct ContentView: View {
 
     var body: some View {
         Group {
-            if embedInNavigationStack {
+            if databaseManager.isLoading {
+                loadingView
+            } else if embedInNavigationStack {
                 NavigationStack {
                     searchContent
                 }
             } else {
                 searchContent
             }
+        }
+    }
+
+    private var loadingView: some View {
+        VStack(spacing: 20) {
+            ProgressView()
+                .scaleEffect(1.5)
+            Text("Loading dictionary...")
+                .font(.headline)
+                .foregroundColor(.secondary)
         }
     }
 
