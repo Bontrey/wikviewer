@@ -76,17 +76,11 @@ struct PartOfSpeechSection: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            // Part of speech header
-            Text(partOfSpeech)
-                .font(.title2)
-                .fontWeight(.semibold)
-                .foregroundColor(.secondary)
-                .italic()
-
             // Show each sense with numbering if multiple
             ForEach(senses.indices, id: \.self) { index in
                 SenseView(
                     sense: senses[index],
+                    partOfSpeech: partOfSpeech,
                     number: senses.count > 1 ? index + 1 : nil,
                     selection: $selection,
                     onFind: onFind
@@ -104,17 +98,26 @@ struct PartOfSpeechSection: View {
 
 struct SenseView: View {
     let sense: DictionarySense
+    let partOfSpeech: String
     let number: Int?
     @Binding var selection: TextSelection?
     var onFind: ((String) -> Void)?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            // Sense number if provided
+            // Part of speech header with number if provided
             if let number = number {
-                Text("\(number).")
-                    .font(.headline)
-                    .foregroundColor(.primary)
+                Text("\(partOfSpeech) \(number)")
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.secondary)
+                    .italic()
+            } else {
+                Text(partOfSpeech)
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.secondary)
+                    .italic()
             }
 
             // Definition
