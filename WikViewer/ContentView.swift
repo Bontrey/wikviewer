@@ -90,6 +90,8 @@ struct ContentView: View {
                     .focused($isSearchFocused)
                     .textFieldStyle(.plain)
                     .autocorrectionDisabled()
+                    .textInputAutocapitalization(.never)
+                    .submitLabel(.search)
 
                 Button(action: { useTrigramIndex.toggle() }) {
                     Image(systemName: useTrigramIndex ? "eye" : "eye.half.closed")
