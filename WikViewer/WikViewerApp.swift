@@ -23,7 +23,6 @@ struct WikViewerApp: App {
                         try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
                     }
                     // Now load history
-                    print("WikViewerApp: Database finished loading, calling loadHistory()")
                     historyManager.loadHistory()
                 }
         }

@@ -46,8 +46,6 @@ class HistoryManager: ObservableObject {
     /// Records that a user viewed a dictionary entry
     /// Adds to front of history, removes duplicates, maintains max size
     func recordView(of entry: CoalescedEntry) {
-        print("HistoryManager: Recording view of '\(entry.word)'")
-
         // Remove existing occurrence if present (deduplication)
         recentEntries.removeAll { $0.word == entry.word }
 
@@ -59,8 +57,6 @@ class HistoryManager: ObservableObject {
             recentEntries = Array(recentEntries.prefix(maxHistorySize))
         }
 
-        print("HistoryManager: Now have \(recentEntries.count) entries in history")
-
         // Persist to UserDefaults
         persistHistory()
     }
@@ -70,7 +66,6 @@ class HistoryManager: ObservableObject {
     func loadHistory() {
         guard let data = UserDefaults.standard.data(forKey: historyKey) else {
             recentEntries = []
-            print("HistoryManager: No saved history found")
             return
         }
 
@@ -78,9 +73,7 @@ class HistoryManager: ObservableObject {
             let decoder = JSONDecoder()
             let historyEntries = try decoder.decode([HistoryEntry].self, from: data)
             recentEntries = historyEntries.map { $0.toCoalescedEntry() }
-            print("HistoryManager: Loaded \(recentEntries.count) entries from history")
         } catch {
-            print("HistoryManager: Failed to decode history: \(error)")
             recentEntries = []
         }
     }
@@ -95,9 +88,8 @@ class HistoryManager: ObservableObject {
             let encoder = JSONEncoder()
             let data = try encoder.encode(historyEntries)
             UserDefaults.standard.set(data, forKey: historyKey)
-            print("HistoryManager: Persisted \(historyEntries.count) entries")
         } catch {
-            print("HistoryManager: Failed to persist history: \(error)")
+            // Silently fail - history persistence is non-critical
         }
     }
 }

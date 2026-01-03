@@ -240,10 +240,7 @@ struct ContentView: View {
                 Task { @MainActor in
                     // Find exact match (case-insensitive)
                     if let match = results.first(where: { $0.word.lowercased() == word.lowercased() }) {
-                        print("ContentView: Found full entry for '\(word)'")
                         self.loadedHistoryEntry = match
-                    } else {
-                        print("ContentView: No match found for '\(word)' in database")
                     }
                     // Clear the trigger to prevent re-triggering
                     self.selectedHistoryWord = nil
