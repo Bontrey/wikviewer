@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SearchResultsView: View {
     @ObservedObject var databaseManager: DatabaseManager
+    @EnvironmentObject var historyManager: HistoryManager
     let initialQuery: String
 
     init(databaseManager: DatabaseManager, initialQuery: String) {
@@ -12,6 +13,7 @@ struct SearchResultsView: View {
     var body: some View {
         ContentView(
             databaseManager: databaseManager,
+            historyManager: historyManager,
             initialQuery: initialQuery,
             navigationTitle: "Find Results",
             titleDisplayMode: .inline,

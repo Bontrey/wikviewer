@@ -39,6 +39,15 @@ struct DictionarySense: Identifiable, Hashable {
         self.etymology = entry.etymology
     }
 
+    init(id: UUID, partOfSpeech: String, gloss: String, definition: String, examples: [String], etymology: String?) {
+        self.id = id
+        self.partOfSpeech = partOfSpeech
+        self.gloss = gloss
+        self.definition = definition
+        self.examples = examples
+        self.etymology = etymology
+    }
+
     static func == (lhs: DictionarySense, rhs: DictionarySense) -> Bool {
         lhs.id == rhs.id
     }

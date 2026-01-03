@@ -2,11 +2,14 @@ import SwiftUI
 
 struct ContentView: View {
     @ObservedObject var databaseManager: DatabaseManager
+    @ObservedObject var historyManager: HistoryManager
     @State private var searchText: String
     @State private var searchResults: [CoalescedEntry] = []
     @State private var currentSearchID = 0
     @State private var useTrigramIndex = false
     @FocusState private var isSearchFocused: Bool
+    @State private var selectedHistoryWord: String?
+    @State private var loadedHistoryEntry: CoalescedEntry?
 
     let navigationTitle: String
     let titleDisplayMode: NavigationBarItem.TitleDisplayMode
@@ -15,6 +18,7 @@ struct ContentView: View {
 
     init(
         databaseManager: DatabaseManager,
+        historyManager: HistoryManager,
         initialQuery: String = "",
         navigationTitle: String = "Wiktionnaire",
         titleDisplayMode: NavigationBarItem.TitleDisplayMode = .large,
@@ -22,6 +26,7 @@ struct ContentView: View {
         embedInNavigationStack: Bool = true
     ) {
         self.databaseManager = databaseManager
+        self.historyManager = historyManager
         self._searchText = State(initialValue: initialQuery)
         self.navigationTitle = navigationTitle
         self.titleDisplayMode = titleDisplayMode
@@ -30,8 +35,23 @@ struct ContentView: View {
     }
 
     var displayedEntries: [CoalescedEntry] {
-        let entries = searchText.isEmpty && showAllEntriesWhenEmpty ? databaseManager.coalescedEntries : searchResults
-        return entries.sorted { $0.word.count < $1.word.count }
+        let entries: [CoalescedEntry]
+        if !searchText.isEmpty {
+            // Search is active: show search results
+            entries = searchResults.sorted { $0.word.count < $1.word.count }
+        } else if showAllEntriesWhenEmpty {
+            // Search is empty and we should show defaults
+            // Show recent history in chronological order (most recent first)
+            entries = historyManager.recentEntries
+        } else {
+            // Search is empty but we shouldn't show anything (SearchResultsView case)
+            entries = []
+        }
+        return entries
+    }
+
+    var isShowingHistory: Bool {
+        searchText.isEmpty && showAllEntriesWhenEmpty
     }
 
     var body: some View {
@@ -41,9 +61,11 @@ struct ContentView: View {
             } else if embedInNavigationStack {
                 NavigationStack {
                     searchContent
+                        .environmentObject(historyManager)
                 }
             } else {
                 searchContent
+                    .environmentObject(historyManager)
             }
         }
     }
@@ -87,23 +109,72 @@ struct ContentView: View {
             .padding(.horizontal)
             .padding(.vertical, 8)
 
-            List(displayedEntries) { entry in
-                NavigationLink(destination: DetailView(coalescedEntry: entry)) {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(entry.word)
-                            .font(.headline)
-                            .foregroundColor(.primary)
+            List {
+                if isShowingHistory {
+                    Section {
+                        if displayedEntries.isEmpty {
+                            // Placeholder when history is empty
+                            Text("Words you look up will appear here")
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                                .padding(.vertical, 12)
+                                .listRowSeparator(.hidden)
+                        } else {
+                            ForEach(displayedEntries) { entry in
+                                Button(action: {
+                                    // Trigger database search for full entry
+                                    selectedHistoryWord = entry.word
+                                }) {
+                                    HStack {
+                                        VStack(alignment: .leading, spacing: 4) {
+                                            Text(entry.word)
+                                                .font(.headline)
+                                                .foregroundColor(.primary)
 
-                        Text(entry.primaryGloss)
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                            .lineLimit(2)
+                                            Text(entry.primaryGloss)
+                                                .font(.subheadline)
+                                                .foregroundColor(.secondary)
+                                                .lineLimit(2)
 
-                        Text(entry.partsOfSpeech)
-                            .font(.caption)
-                            .foregroundColor(.secondary)
+                                            Text(entry.partsOfSpeech)
+                                                .font(.caption)
+                                                .foregroundColor(.secondary)
+                                        }
+                                        Spacer()
+                                        Image(systemName: "chevron.right")
+                                            .font(.caption)
+                                            .foregroundColor(.secondary)
+                                    }
+                                    .padding(.vertical, 4)
+                                    .contentShape(Rectangle())
+                                }
+                                .buttonStyle(.plain)
+                            }
+                        }
+                    } header: {
+                        Text("Recently Viewed")
                     }
-                    .padding(.vertical, 4)
+                } else {
+                    // Search results or SearchResultsView
+                    ForEach(displayedEntries) { entry in
+                        NavigationLink(destination: DetailView(coalescedEntry: entry)) {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(entry.word)
+                                    .font(.headline)
+                                    .foregroundColor(.primary)
+
+                                Text(entry.primaryGloss)
+                                    .font(.subheadline)
+                                    .foregroundColor(.secondary)
+                                    .lineLimit(2)
+
+                                Text(entry.partsOfSpeech)
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                            }
+                            .padding(.vertical, 4)
+                        }
+                    }
                 }
             }
             .listStyle(.plain)
@@ -115,6 +186,15 @@ struct ContentView: View {
         }
         .navigationTitle(navigationTitle)
         .navigationBarTitleDisplayMode(titleDisplayMode)
+        .navigationDestination(item: $loadedHistoryEntry) { entry in
+            DetailView(coalescedEntry: entry)
+        }
+        .task(id: selectedHistoryWord) {
+            // When a history word is selected, search the database for the full entry
+            if let word = selectedHistoryWord {
+                await loadFullEntryFromDatabase(word: word)
+            }
+        }
         .task(id: searchText) {
             if searchText.isEmpty {
                 searchResults = []
@@ -153,8 +233,31 @@ struct ContentView: View {
             }
         }
     }
+
+    private func loadFullEntryFromDatabase(word: String) async {
+        await withCheckedContinuation { continuation in
+            databaseManager.searchDictionary(query: word, useTrigramIndex: false) { results in
+                Task { @MainActor in
+                    // Find exact match (case-insensitive)
+                    if let match = results.first(where: { $0.word.lowercased() == word.lowercased() }) {
+                        print("ContentView: Found full entry for '\(word)'")
+                        self.loadedHistoryEntry = match
+                    } else {
+                        print("ContentView: No match found for '\(word)' in database")
+                    }
+                    // Clear the trigger to prevent re-triggering
+                    self.selectedHistoryWord = nil
+                    continuation.resume()
+                }
+            }
+        }
+    }
 }
 
 #Preview {
-    ContentView(databaseManager: DatabaseManager())
+    let dbManager = DatabaseManager()
+    return ContentView(
+        databaseManager: dbManager,
+        historyManager: HistoryManager(databaseManager: dbManager)
+    )
 }

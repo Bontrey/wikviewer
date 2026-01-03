@@ -17,6 +17,7 @@
 		AA0000000000000000000021 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000022 /* DatabaseManager.swift */; };
 		AA0000000000000000000024 /* SelectableText.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000023 /* SelectableText.swift */; };
 		AA0000000000000000000025 /* SearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000026 /* SearchResultsView.swift */; };
+		AA0000000000000000000027 /* HistoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000028 /* HistoryManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		AA0000000000000000000022 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		AA0000000000000000000023 /* SelectableText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableText.swift; sourceTree = "<group>"; };
 		AA0000000000000000000026 /* SearchResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsView.swift; sourceTree = "<group>"; };
+		AA0000000000000000000028 /* HistoryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +64,7 @@
 				AA0000000000000000000018 /* DetailView.swift */,
 				AA0000000000000000000016 /* DictionaryEntry.swift */,
 				AA0000000000000000000022 /* DatabaseManager.swift */,
+				AA0000000000000000000028 /* HistoryManager.swift */,
 				96D8DB1B2F04190700B1BFCF /* EntryCoalescer.swift */,
 				AA0000000000000000000023 /* SelectableText.swift */,
 				AA0000000000000000000026 /* SearchResultsView.swift */,
@@ -154,6 +157,7 @@
 				96D8DB1C2F04190D00B1BFCF /* EntryCoalescer.swift in Sources */,
 				AA0000000000000000000015 /* DictionaryEntry.swift in Sources */,
 				AA0000000000000000000021 /* DatabaseManager.swift in Sources */,
+				AA0000000000000000000027 /* HistoryManager.swift in Sources */,
 				AA0000000000000000000024 /* SelectableText.swift in Sources */,
 				AA0000000000000000000025 /* SearchResultsView.swift in Sources */,
 				AA0000000000000000000001 /* WikViewerApp.swift in Sources */,

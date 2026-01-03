@@ -8,6 +8,7 @@ enum FindDestination: Hashable {
 struct DetailView: View {
     let coalescedEntry: CoalescedEntry
     @EnvironmentObject var databaseManager: DatabaseManager
+    @EnvironmentObject var historyManager: HistoryManager
     @State private var selection: TextSelection? = nil
     @State private var findDestination: FindDestination? = nil
 
@@ -43,6 +44,9 @@ struct DetailView: View {
             case .searchResults(let query):
                 SearchResultsView(databaseManager: databaseManager, initialQuery: query)
             }
+        }
+        .onAppear {
+            historyManager.recordView(of: coalescedEntry)
         }
     }
 
@@ -162,7 +166,8 @@ struct SenseView: View {
 }
 
 #Preview {
-    NavigationStack {
+    let dbManager = DatabaseManager()
+    return NavigationStack {
         DetailView(coalescedEntry: CoalescedEntry(
             id: UUID(),
             word: "run",
@@ -170,5 +175,7 @@ struct SenseView: View {
                 DictionarySense(from: DictionaryEntry.sampleData[0])
             ]
         ))
+        .environmentObject(dbManager)
+        .environmentObject(HistoryManager(databaseManager: dbManager))
     }
 }
