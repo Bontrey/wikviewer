@@ -238,8 +238,8 @@ struct ContentView: View {
         await withCheckedContinuation { continuation in
             databaseManager.searchDictionary(query: word, useTrigramIndex: false) { results in
                 Task { @MainActor in
-                    // Find exact match (case-insensitive)
-                    if let match = results.first(where: { $0.word.lowercased() == word.lowercased() }) {
+                    // Find exact match (case-sensitive)
+                    if let match = results.first(where: { $0.word == word }) {
                         self.loadedHistoryEntry = match
                     }
                     // Clear the trigger to prevent re-triggering
