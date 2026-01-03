@@ -11,6 +11,7 @@ struct DetailView: View {
     @EnvironmentObject var historyManager: HistoryManager
     @State private var selection: TextSelection? = nil
     @State private var findDestination: FindDestination? = nil
+    @State private var hasRecordedView = false
 
     var body: some View {
         ScrollView {
@@ -46,7 +47,11 @@ struct DetailView: View {
             }
         }
         .onAppear {
-            historyManager.recordView(of: coalescedEntry)
+            // Only record the view on initial appearance (push), not when popping back
+            if !hasRecordedView {
+                historyManager.recordView(of: coalescedEntry)
+                hasRecordedView = true
+            }
         }
     }
 
