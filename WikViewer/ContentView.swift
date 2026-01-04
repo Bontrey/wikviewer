@@ -247,7 +247,9 @@ struct ContentView: View {
         // Strip l' or d' prefix if present (typographic apostrophe)
         let normalizedQuery: String
         let lowercased = query.lowercased()
-        if lowercased.count > 2 && ( lowercased.hasPrefix("l’") || lowercased.hasPrefix("d’")) {
+        if lowercased.count > 2 && ( lowercased.hasPrefix("l’") || lowercased.hasPrefix("d’") ||
+            lowercased.hasPrefix("l'") ||
+            lowercased.hasPrefix("d'")) {
             normalizedQuery = String(query.dropFirst(2))
         } else {
             normalizedQuery = query
