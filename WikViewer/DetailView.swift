@@ -71,12 +71,45 @@ struct DetailView: View {
     }
 
     private func handleFind(selectedText: String) {
-        databaseManager.searchDictionary(query: selectedText) { results in
-            if results.count == 1, let singleResult = results.first {
-                // Single result: navigate directly to the entry
-                findDestination = .entry(singleResult)
+        // Normalize the query by stripping l' or d' prefix if present
+        let normalizedQuery: String
+        let lowercased = selectedText.lowercased()
+        if lowercased.count > 2 && (lowercased.hasPrefix("l'") || lowercased.hasPrefix("d'") ||
+            lowercased.hasPrefix("l'") || lowercased.hasPrefix("d'")) {
+            normalizedQuery = String(selectedText.dropFirst(2))
+        } else {
+            normalizedQuery = selectedText
+        }
+
+        databaseManager.searchDictionary(query: normalizedQuery) { results in
+            // Check if there's exactly 1 exact match (same length as normalized query)
+            let exactMatches = results.filter { $0.word.count == normalizedQuery.count }
+
+            if exactMatches.count == 1, let exactMatch = exactMatches.first {
+                // Exactly one exact match: navigate directly to the entry
+                findDestination = .entry(exactMatch)
+            } else if exactMatches.count > 1 {
+                // Multiple exact matches: first check for case-sensitive equality
+                let caseSensitiveMatches = exactMatches.filter { $0.word == normalizedQuery }
+
+                if caseSensitiveMatches.count == 1, let match = caseSensitiveMatches.first {
+                    // Exactly one case-sensitive match: navigate directly to the entry
+                    findDestination = .entry(match)
+                } else {
+                    // Multiple or no case-sensitive matches: check for case-insensitive equality to handle accents
+                    let normalizedQueryLower = normalizedQuery.lowercased()
+                    let caseInsensitiveMatches = exactMatches.filter { $0.word.lowercased() == normalizedQueryLower }
+
+                    if caseInsensitiveMatches.count == 1, let match = caseInsensitiveMatches.first {
+                        // Exactly one case-insensitive match: navigate directly to the entry
+                        findDestination = .entry(match)
+                    } else {
+                        // 0 or multiple case-insensitive matches: show search results view
+                        findDestination = .searchResults(selectedText)
+                    }
+                }
             } else {
-                // 0 or multiple results: show search results view
+                // 0 exact matches: show search results view
                 findDestination = .searchResults(selectedText)
             }
         }
