@@ -75,7 +75,7 @@ struct DetailView: View {
         // Normalize the query by stripping l' or d' prefix if present
         let normalizedQuery: String
         let lowercased = selectedText.lowercased()
-        if lowercased.count > 2 && (lowercased.hasPrefix("l'") || lowercased.hasPrefix("d'") ||
+        if lowercased.count > 2 && (lowercased.hasPrefix("l’") || lowercased.hasPrefix("d’") ||
             lowercased.hasPrefix("l'") || lowercased.hasPrefix("d'")) {
             normalizedQuery = String(selectedText.dropFirst(2))
         } else {
