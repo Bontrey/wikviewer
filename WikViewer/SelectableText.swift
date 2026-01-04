@@ -11,17 +11,19 @@ class SelectableTextLabel: UITextView {
         return .zero
     }
 
-    // only allow copy, select, selectAll, share, and customFind
+    // only allow copy, selectAll, share, customFind, and lookup
     override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
         switch action {
             case
             #selector(copy(_:)),
-            #selector(select(_:)),
             #selector(selectAll(_:)),
             #selector(customFind(_:)):
             return true
         default:
             if (action == Selector(("_share:"))) {
+                return true
+            }
+            if (action == Selector(("_define:"))) {
                 return true
             }
             return false
