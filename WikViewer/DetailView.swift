@@ -9,6 +9,7 @@ struct DetailView: View {
     let coalescedEntry: CoalescedEntry
     @EnvironmentObject var databaseManager: DatabaseManager
     @EnvironmentObject var historyManager: HistoryManager
+    @EnvironmentObject var navigationCoordinator: NavigationCoordinator
     @State private var selection: TextSelection? = nil
     @State private var findDestination: FindDestination? = nil
     @State private var hasRecordedView = false
@@ -38,12 +39,26 @@ struct DetailView: View {
             .padding()
         }
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: {
+                    navigationCoordinator.popToRoot()
+                }) {
+                    Image(systemName: "house")
+                }
+            }
+        }
         .navigationDestination(item: $findDestination) { destination in
             switch destination {
             case .entry(let entry):
                 DetailView(coalescedEntry: entry)
             case .searchResults(let query):
                 SearchResultsView(databaseManager: databaseManager, initialQuery: query)
+            }
+        }
+        .onChange(of: navigationCoordinator.shouldPopToRoot) { _, shouldPop in
+            if shouldPop {
+                findDestination = nil
             }
         }
         .onAppear {
@@ -185,5 +200,6 @@ struct SenseView: View {
         ))
         .environmentObject(dbManager)
         .environmentObject(HistoryManager(databaseManager: dbManager))
+        .environmentObject(NavigationCoordinator())
     }
 }

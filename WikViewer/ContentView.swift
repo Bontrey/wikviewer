@@ -3,6 +3,7 @@ import SwiftUI
 struct ContentView: View {
     @ObservedObject var databaseManager: DatabaseManager
     @ObservedObject var historyManager: HistoryManager
+    @EnvironmentObject var navigationCoordinator: NavigationCoordinator
     @State private var searchText: String
     @State private var searchResults: [CoalescedEntry] = []
     @State private var currentSearchID = 0
@@ -15,6 +16,7 @@ struct ContentView: View {
     let titleDisplayMode: NavigationBarItem.TitleDisplayMode
     let showAllEntriesWhenEmpty: Bool
     let embedInNavigationStack: Bool
+    let showPopToRootButton: Bool
 
     init(
         databaseManager: DatabaseManager,
@@ -23,7 +25,8 @@ struct ContentView: View {
         navigationTitle: String = "Wiktionnaire",
         titleDisplayMode: NavigationBarItem.TitleDisplayMode = .large,
         showAllEntriesWhenEmpty: Bool = true,
-        embedInNavigationStack: Bool = true
+        embedInNavigationStack: Bool = true,
+        showPopToRootButton: Bool = false
     ) {
         self.databaseManager = databaseManager
         self.historyManager = historyManager
@@ -32,6 +35,7 @@ struct ContentView: View {
         self.titleDisplayMode = titleDisplayMode
         self.showAllEntriesWhenEmpty = showAllEntriesWhenEmpty
         self.embedInNavigationStack = embedInNavigationStack
+        self.showPopToRootButton = showPopToRootButton
     }
 
     var displayedEntries: [CoalescedEntry] {
@@ -188,8 +192,25 @@ struct ContentView: View {
         }
         .navigationTitle(navigationTitle)
         .navigationBarTitleDisplayMode(titleDisplayMode)
+        .toolbar {
+            if showPopToRootButton {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        navigationCoordinator.popToRoot()
+                    }) {
+                        Image(systemName: "house")
+                    }
+                }
+            }
+        }
         .navigationDestination(item: $loadedHistoryEntry) { entry in
             DetailView(coalescedEntry: entry)
+        }
+        .onChange(of: navigationCoordinator.shouldPopToRoot) { _, shouldPop in
+            if shouldPop {
+                searchText = ""
+                loadedHistoryEntry = nil
+            }
         }
         .task(id: selectedHistoryWord) {
             // When a history word is selected, search the database for the full entry
@@ -259,4 +280,5 @@ struct ContentView: View {
         databaseManager: dbManager,
         historyManager: HistoryManager(databaseManager: dbManager)
     )
+    .environmentObject(NavigationCoordinator())
 }

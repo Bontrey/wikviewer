@@ -4,6 +4,7 @@ import SwiftUI
 struct WikViewerApp: App {
     @StateObject private var databaseManager: DatabaseManager
     @StateObject private var historyManager: HistoryManager
+    @StateObject private var navigationCoordinator = NavigationCoordinator()
 
     init() {
         let dbManager = DatabaseManager()
@@ -16,6 +17,7 @@ struct WikViewerApp: App {
             ContentView(databaseManager: databaseManager, historyManager: historyManager)
                 .environmentObject(databaseManager)
                 .environmentObject(historyManager)
+                .environmentObject(navigationCoordinator)
                 .task {
                     databaseManager.loadDictionary()
                     // Wait for database to finish loading

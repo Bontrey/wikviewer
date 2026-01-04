@@ -18,7 +18,8 @@ struct SearchResultsView: View {
             navigationTitle: "Find Results",
             titleDisplayMode: .inline,
             showAllEntriesWhenEmpty: false,
-            embedInNavigationStack: false
+            embedInNavigationStack: false,
+            showPopToRootButton: true
         )
     }
 }
