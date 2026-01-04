@@ -244,8 +244,17 @@ struct ContentView: View {
     }
 
     private func performSearch(query: String, searchID: Int) async {
+        // Strip l' or d' prefix if present (typographic apostrophe)
+        let normalizedQuery: String
+        let lowercased = query.lowercased()
+        if lowercased.count > 2 && ( lowercased.hasPrefix("l’") || lowercased.hasPrefix("d’")) {
+            normalizedQuery = String(query.dropFirst(2))
+        } else {
+            normalizedQuery = query
+        }
+
         await withCheckedContinuation { continuation in
-            databaseManager.searchDictionary(query: query, useTrigramIndex: useTrigramIndex) { results in
+            databaseManager.searchDictionary(query: normalizedQuery, useTrigramIndex: useTrigramIndex) { results in
                 Task { @MainActor in
                     // Only update if this is still the current search
                     if searchID == self.currentSearchID {
