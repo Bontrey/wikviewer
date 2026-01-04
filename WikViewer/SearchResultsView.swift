@@ -15,7 +15,7 @@ struct SearchResultsView: View {
             databaseManager: databaseManager,
             historyManager: historyManager,
             initialQuery: initialQuery,
-            navigationTitle: "Find Results",
+            navigationTitle: "Search Results",
             titleDisplayMode: .inline,
             showAllEntriesWhenEmpty: false,
             embedInNavigationStack: false,

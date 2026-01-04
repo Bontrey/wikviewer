@@ -90,7 +90,7 @@ struct ContentView: View {
             HStack {
                 Image(systemName: "magnifyingglass")
                     .foregroundColor(.secondary)
-                TextField("Find words...", text: $searchText)
+                TextField("Search words...", text: $searchText)
                     .focused($isSearchFocused)
                     .textFieldStyle(.plain)
                     .autocorrectionDisabled()
@@ -120,7 +120,7 @@ struct ContentView: View {
                     Section {
                         if displayedEntries.isEmpty {
                             // Placeholder when history is empty
-                            Text("Words you look up will appear here")
+                            Text("Words will appear here")
                                 .font(.subheadline)
                                 .foregroundColor(.secondary)
                                 .padding(.vertical, 12)

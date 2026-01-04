@@ -5,19 +5,20 @@ import UIKit
 class SelectableTextLabel: UITextView {
 
     var onFind: ((String) -> Void)?
+    var onSearch: ((String) -> Void)?
 
     // hide the cursor
     override func caretRect(for position: UITextPosition) -> CGRect {
         return .zero
     }
 
-    // only allow copy, selectAll, share, customFind, and lookup
+    // only allow copy, share, customFind, customSearch, and lookup
     override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
         switch action {
             case
             #selector(copy(_:)),
-            #selector(selectAll(_:)),
-            #selector(customFind(_:)):
+            #selector(customFind(_:)),
+            #selector(customSearch(_:)):
             return true
         default:
             if (action == Selector(("_share:"))) {
@@ -30,7 +31,7 @@ class SelectableTextLabel: UITextView {
         }
     }
 
-    // Add custom Find menu item
+    // Add custom Find and Search menu items
     override func editMenu(for textRange: UITextRange, suggestedActions: [UIMenuElement]) -> UIMenu? {
         var actions = suggestedActions
 
@@ -39,7 +40,13 @@ class SelectableTextLabel: UITextView {
             self?.customFind(nil)
         }
 
+        // Create custom Search action
+        let searchAction = UIAction(title: "Search", image: UIImage(systemName: "magnifyingglass.circle")) { [weak self] _ in
+            self?.customSearch(nil)
+        }
+
         actions.insert(findAction, at: 0)
+        actions.insert(searchAction, at: 1)
 
         return UIMenu(children: actions)
     }
@@ -63,6 +70,15 @@ class SelectableTextLabel: UITextView {
         }
         onFind?(selectedText)
     }
+
+    @objc func customSearch(_ sender: Any?) {
+        guard let selectedRange = selectedTextRange,
+              let selectedText = text(in: selectedRange),
+              !selectedText.isEmpty else {
+            return
+        }
+        onSearch?(selectedText)
+    }
 }
 
 struct SelectableText: UIViewRepresentable {
@@ -73,12 +89,14 @@ struct SelectableText: UIViewRepresentable {
     var fontWeight: UIFont.Weight?
     var textColor: UIColor = .label
     var onFind: ((String) -> Void)?
+    var onSearch: ((String) -> Void)?
 
     func makeUIView(context: Context) -> SelectableTextLabel {
         let textView = SelectableTextLabel()
         textView.delegate = context.coordinator
         textView.text = self.text
         textView.onFind = self.onFind
+        textView.onSearch = self.onSearch
 
         // Configure for read-only selectable text
         textView.isEditable = false
@@ -105,8 +123,9 @@ struct SelectableText: UIViewRepresentable {
         uiView.font = applyFontWeight(to: uiFont, weight: fontWeight)
         uiView.textColor = textColor
 
-        // Update onFind callback
+        // Update callbacks
         uiView.onFind = self.onFind
+        uiView.onSearch = self.onSearch
 
         // Don't apply selection from other text fields
         context.coordinator.currentText = self.text

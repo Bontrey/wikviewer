@@ -18,7 +18,7 @@ struct DetailView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
                 // Word header
-                SelectableText(text: coalescedEntry.word, selection: $selection, onFind: handleFind)
+                SelectableText(text: coalescedEntry.word, selection: $selection, onFind: handleFind, onSearch: handleSearch)
                     .font(.largeTitle)
                     .fontWeight(.bold)
 
@@ -30,7 +30,8 @@ struct DetailView: View {
                         partOfSpeech: group.pos,
                         senses: group.senses,
                         selection: $selection,
-                        onFind: handleFind
+                        onFind: handleFind,
+                        onSearch: handleSearch
                     )
                 }
 
@@ -114,6 +115,11 @@ struct DetailView: View {
             }
         }
     }
+
+    private func handleSearch(selectedText: String) {
+        // Always navigate to search results view without optimization
+        findDestination = .searchResults(selectedText)
+    }
 }
 
 struct PartOfSpeechSection: View {
@@ -121,6 +127,7 @@ struct PartOfSpeechSection: View {
     let senses: [DictionarySense]
     @Binding var selection: TextSelection?
     var onFind: ((String) -> Void)?
+    var onSearch: ((String) -> Void)?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -131,7 +138,8 @@ struct PartOfSpeechSection: View {
                     partOfSpeech: partOfSpeech,
                     number: senses.count > 1 ? index + 1 : nil,
                     selection: $selection,
-                    onFind: onFind
+                    onFind: onFind,
+                    onSearch: onSearch
                 )
 
                 if index < senses.count - 1 {
@@ -150,6 +158,7 @@ struct SenseView: View {
     let number: Int?
     @Binding var selection: TextSelection?
     var onFind: ((String) -> Void)?
+    var onSearch: ((String) -> Void)?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -175,7 +184,7 @@ struct SenseView: View {
                     .foregroundColor(.secondary)
                     .textCase(.uppercase)
 
-                SelectableText(text: sense.definition, selection: $selection, onFind: onFind)
+                SelectableText(text: sense.definition, selection: $selection, onFind: onFind, onSearch: onSearch)
                     .font(.body)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
@@ -194,7 +203,7 @@ struct SenseView: View {
                                 .foregroundColor(.secondary)
                                 .fontWeight(.medium)
 
-                            SelectableText(text: sense.examples[index], selection: $selection, onFind: onFind)
+                            SelectableText(text: sense.examples[index], selection: $selection, onFind: onFind, onSearch: onSearch)
                                 .font(.body)
                                 .italic()
                                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -211,7 +220,7 @@ struct SenseView: View {
                         .foregroundColor(.secondary)
                         .textCase(.uppercase)
 
-                    SelectableText(text: etymology, selection: $selection, onFind: onFind)
+                    SelectableText(text: etymology, selection: $selection, onFind: onFind, onSearch: onSearch)
                         .font(.body)
                         .foregroundColor(.secondary)
                         .frame(maxWidth: .infinity, alignment: .leading)
