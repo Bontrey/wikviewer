@@ -12,7 +12,7 @@ class SelectableTextLabel: UITextView {
         return .zero
     }
 
-    // only allow copy, share, customFind, customSearch, and lookup
+    // only allow copy, share, customFind, customSearch, lookup, and translate
     override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
         switch action {
             case
@@ -25,6 +25,9 @@ class SelectableTextLabel: UITextView {
                 return true
             }
             if (action == Selector(("_define:"))) {
+                return true
+            }
+            if (action == Selector(("_translate:"))) {
                 return true
             }
             return false
