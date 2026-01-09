@@ -11,6 +11,7 @@ struct ContentView: View {
     @FocusState private var isSearchFocused: Bool
     @State private var selectedHistoryWord: String?
     @State private var loadedHistoryEntry: CoalescedEntry?
+    @State private var selectedSearchEntry: CoalescedEntry?
 
     let navigationTitle: String
     let titleDisplayMode: NavigationBarItem.TitleDisplayMode
@@ -163,23 +164,33 @@ struct ContentView: View {
                 } else {
                     // Search results or SearchResultsView
                     ForEach(displayedEntries) { entry in
-                        NavigationLink(destination: DetailView(coalescedEntry: entry)) {
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text(entry.word)
-                                    .font(.headline)
-                                    .foregroundColor(.primary)
+                        Button(action: {
+                            selectedSearchEntry = entry
+                        }) {
+                            HStack {
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text(entry.word)
+                                        .font(.headline)
+                                        .foregroundColor(.primary)
 
-                                Text(entry.primaryGloss)
-                                    .font(.subheadline)
-                                    .foregroundColor(.secondary)
-                                    .lineLimit(2)
+                                    Text(entry.primaryGloss)
+                                        .font(.subheadline)
+                                        .foregroundColor(.secondary)
+                                        .lineLimit(2)
 
-                                Text(entry.partsOfSpeech)
+                                    Text(entry.partsOfSpeech)
+                                        .font(.caption)
+                                        .foregroundColor(.secondary)
+                                }
+                                Spacer()
+                                Image(systemName: "chevron.right")
                                     .font(.caption)
                                     .foregroundColor(.secondary)
                             }
                             .padding(.vertical, 4)
+                            .contentShape(Rectangle())
                         }
+                        .buttonStyle(.plain)
                     }
                 }
             }
@@ -206,10 +217,14 @@ struct ContentView: View {
         .navigationDestination(item: $loadedHistoryEntry) { entry in
             DetailView(coalescedEntry: entry)
         }
+        .navigationDestination(item: $selectedSearchEntry) { entry in
+            DetailView(coalescedEntry: entry)
+        }
         .onChange(of: navigationCoordinator.shouldPopToRoot) { _, shouldPop in
             if shouldPop {
                 searchText = ""
                 loadedHistoryEntry = nil
+                selectedSearchEntry = nil
             }
         }
         .task(id: selectedHistoryWord) {
