@@ -11,8 +11,16 @@ class DatabaseManager: ObservableObject {
     private var db: OpaquePointer?
 
     func loadDictionary() {
-        isLoading = true
         error = nil
+
+        // Check if decompression is needed before showing loading state
+        let documentsPath = getDocumentsDirectory()
+        let uncompressedDbPath = documentsPath.appendingPathComponent("dictionary.db").path
+        let needsDecompression = !FileManager.default.fileExists(atPath: uncompressedDbPath)
+
+        if needsDecompression {
+            isLoading = true
+        }
 
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let self = self else { return }
