@@ -5,6 +5,7 @@ struct WikViewerApp: App {
     @StateObject private var databaseManager: DatabaseManager
     @StateObject private var historyManager: HistoryManager
     @StateObject private var navigationCoordinator = NavigationCoordinator()
+    @State private var hasLoadedOnLaunch = false
 
     init() {
         let dbManager = DatabaseManager()
@@ -19,6 +20,10 @@ struct WikViewerApp: App {
                 .environmentObject(historyManager)
                 .environmentObject(navigationCoordinator)
                 .task {
+                    // Only load on actual launch, not when returning from background
+                    guard !hasLoadedOnLaunch else { return }
+                    hasLoadedOnLaunch = true
+
                     databaseManager.loadDictionary()
                     // Wait for database to finish loading
                     while databaseManager.isLoading {
