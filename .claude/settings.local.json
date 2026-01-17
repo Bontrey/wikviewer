@@ -14,7 +14,12 @@
       "Bash(ls:*)",
       "WebFetch(domain:medium.com)",
       "Bash(git checkout:*)",
-      "WebFetch(domain:claude.ai)"
+      "WebFetch(domain:claude.ai)",
+      "Bash(git -C /Users/longwei/Desktop/claude-projects/wikviewer status)",
+      "Bash(git -C /Users/longwei/Desktop/claude-projects/wikviewer diff)",
+      "Bash(git -C /Users/longwei/Desktop/claude-projects/wikviewer log --oneline -5)",
+      "Bash(git -C /Users/longwei/Desktop/claude-projects/wikviewer add WikViewer/DetailView.swift)",
+      "Bash(git -C /Users/longwei/Desktop/claude-projects/wikviewer commit -m \"$\\(cat <<''EOF''\nDisplay shared etymology once at top of detail view\n\nWhen all senses have the same etymology, show it once below the word\nheader instead of repeating it under each sense.\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")"
     ],
     "deny": [],
     "ask": []
