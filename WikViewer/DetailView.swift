@@ -14,6 +14,14 @@ struct DetailView: View {
     @State private var findDestination: FindDestination? = nil
     @State private var hasRecordedView = false
 
+    /// Returns the shared etymology if all senses with an etymology have the same one, otherwise nil
+    private var sharedEtymology: String? {
+        let etymologies = coalescedEntry.senses.compactMap { $0.etymology }
+        guard !etymologies.isEmpty else { return nil }
+        let uniqueEtymologies = Set(etymologies)
+        return uniqueEtymologies.count == 1 ? etymologies.first : nil
+    }
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
@@ -22,6 +30,21 @@ struct DetailView: View {
                     .font(.largeTitle)
                     .fontWeight(.bold)
 
+                // Shared etymology at top if all senses have the same one
+                if let etymology = sharedEtymology {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Etymology")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                            .textCase(.uppercase)
+
+                        SelectableText(text: etymology, selection: $selection, onFind: handleFind, onSearch: handleSearch)
+                            .font(.body)
+                            .foregroundColor(.secondary)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                }
+
                 Divider()
 
                 // Iterate through each part of speech group
@@ -29,6 +52,7 @@ struct DetailView: View {
                     PartOfSpeechSection(
                         partOfSpeech: group.pos,
                         senses: group.senses,
+                        hideEtymology: sharedEtymology != nil,
                         selection: $selection,
                         onFind: handleFind,
                         onSearch: handleSearch
@@ -125,6 +149,7 @@ struct DetailView: View {
 struct PartOfSpeechSection: View {
     let partOfSpeech: String
     let senses: [DictionarySense]
+    var hideEtymology: Bool = false
     @Binding var selection: TextSelection?
     var onFind: ((String) -> Void)?
     var onSearch: ((String) -> Void)?
@@ -137,6 +162,7 @@ struct PartOfSpeechSection: View {
                     sense: senses[index],
                     partOfSpeech: partOfSpeech,
                     number: senses.count > 1 ? index + 1 : nil,
+                    hideEtymology: hideEtymology,
                     selection: $selection,
                     onFind: onFind,
                     onSearch: onSearch
@@ -156,6 +182,7 @@ struct SenseView: View {
     let sense: DictionarySense
     let partOfSpeech: String
     let number: Int?
+    var hideEtymology: Bool = false
     @Binding var selection: TextSelection?
     var onFind: ((String) -> Void)?
     var onSearch: ((String) -> Void)?
@@ -212,8 +239,8 @@ struct SenseView: View {
                 }
             }
 
-            // Etymology
-            if let etymology = sense.etymology {
+            // Etymology (only show if not hidden at top level)
+            if !hideEtymology, let etymology = sense.etymology {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Etymology")
                         .font(.caption)
