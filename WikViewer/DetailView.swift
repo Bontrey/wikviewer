@@ -25,10 +25,20 @@ struct DetailView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
-                // Word header
-                SelectableText(text: coalescedEntry.word, selection: $selection, onFind: handleFind, onSearch: handleSearch)
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
+                // Word header with IPA
+                HStack(alignment: .center) {
+                    SelectableText(text: coalescedEntry.word, selection: $selection, onFind: handleFind, onSearch: handleSearch)
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+
+                    Spacer()
+
+                    if let ipa = coalescedEntry.ipa {
+                        Text(ipa)
+                            .font(.body)
+                            .foregroundColor(.secondary)
+                    }
+                }
 
                 // Shared etymology at top if all senses have the same one
                 if let etymology = sharedEtymology {

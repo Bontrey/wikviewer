@@ -177,13 +177,25 @@ class DatabaseManager: ObservableObject {
             etymology = etymologyTexts.joined(separator: " ")
         }
 
+        // Extract IPA from sounds array
+        var ipa: String?
+        if let sounds = json["sounds"] as? [[String: Any]] {
+            for sound in sounds {
+                if let ipaValue = sound["ipa"] as? String {
+                    ipa = ipaValue
+                    break
+                }
+            }
+        }
+
         return DictionaryEntry(
             word: word,
             gloss: gloss.isEmpty ? definition : gloss,
             partOfSpeech: pos,
             definition: definition.isEmpty ? gloss : definition,
             examples: examples,
-            etymology: etymology
+            etymology: etymology,
+            ipa: ipa
         )
     }
 

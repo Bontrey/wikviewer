@@ -8,8 +8,9 @@ struct DictionaryEntry: Identifiable {
     let definition: String
     let examples: [String]
     let etymology: String?
+    let ipa: String?
 
-    init(word: String, gloss: String, partOfSpeech: String, definition: String, examples: [String] = [], etymology: String? = nil) {
+    init(word: String, gloss: String, partOfSpeech: String, definition: String, examples: [String] = [], etymology: String? = nil, ipa: String? = nil) {
         self.id = UUID()
         self.word = word
         self.gloss = gloss
@@ -17,6 +18,7 @@ struct DictionaryEntry: Identifiable {
         self.definition = definition
         self.examples = examples
         self.etymology = etymology
+        self.ipa = ipa
     }
 }
 
@@ -29,6 +31,7 @@ struct DictionarySense: Identifiable, Hashable {
     let definition: String
     let examples: [String]
     let etymology: String?
+    let ipa: String?
 
     init(from entry: DictionaryEntry) {
         self.id = entry.id
@@ -37,15 +40,17 @@ struct DictionarySense: Identifiable, Hashable {
         self.definition = entry.definition
         self.examples = entry.examples
         self.etymology = entry.etymology
+        self.ipa = entry.ipa
     }
 
-    init(id: UUID, partOfSpeech: String, gloss: String, definition: String, examples: [String], etymology: String?) {
+    init(id: UUID, partOfSpeech: String, gloss: String, definition: String, examples: [String], etymology: String?, ipa: String? = nil) {
         self.id = id
         self.partOfSpeech = partOfSpeech
         self.gloss = gloss
         self.definition = definition
         self.examples = examples
         self.etymology = etymology
+        self.ipa = ipa
     }
 
     static func == (lhs: DictionarySense, rhs: DictionarySense) -> Bool {
@@ -71,6 +76,10 @@ struct CoalescedEntry: Identifiable, Hashable {
     var partsOfSpeech: String {
         let uniquePOS = Set(senses.map { $0.partOfSpeech })
         return Array(uniquePOS).sorted().joined(separator: ", ")
+    }
+
+    var ipa: String? {
+        senses.first(where: { $0.ipa != nil })?.ipa
     }
 
     func groupedByPartOfSpeech() -> [(pos: String, senses: [DictionarySense])] {
